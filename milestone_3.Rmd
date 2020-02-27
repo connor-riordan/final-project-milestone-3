@@ -9,6 +9,44 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
+library(readxl)
+library(janitor)
 
 ```
+
+```{r}
+age_by_region_voting_2016 <- read_xlsx("Raw-data/age_by_region_voting_2016.xlsx", skip = 6) %>%
+  clean_names()
+
+age_by_region_voting_2016
+
+```
+
+
+```{r}
+age_characteristics_voting_2018 <- read_xlsx("Raw-data/age_characteristics_voting_2018.xlsx", skip = 2) %>%
+  clean_names()
+
+age_characteristics_voting_2018
+
+```
+
+
+```{r}
+civic_education_requirements_by_state <- read_csv("Raw-data/civic_education_requirements_by_state.csv") %>%
+  clean_names()
+
+civic_education_requirements_by_state
+
+```
+
+
+```{r}
+votes_cast_voting_age_2018 <- read_xlsx("Raw-data/votes_cast_voting_age_2018.xlsx", skip = 2) %>%
+  clean_names()
+
+votes_cast_voting_age_2018
+
+```
+
 
