@@ -369,225 +369,3130 @@ summary {
 </div>
 
 
-<p>Introduction: The ability of United States citizens to participate in thier democracy is a fundamental right guaranteed by the Constitution. We are very fortunate to live under a democratic government and have the ability to directly participate in the democratic process, and it is easy to assume that U.S. citizens would want to know about and participate in their government. It is surprising, then, that a 2019 story from the Annenberg Public Policy Center found that only roughly 1 in 3 Americans could name all three branches of the U.S. government, and 1 in 5 can’t name a single one. It is also consistently disheartening to see the extremely low percentage of eligible voters that show up to the polls to essentially decide the fate of those who do not vote themselves.</p>
-<p>Purpose of this Project: I believe that civic education is instrumental in helping students become more likely to participate in the democratic process. This project will examine data from a multitude of sources to compare the civic education requirements of the states and their voting patterns, as well as the amount of funding each state allocates towards civic education. I believe these factors will shed some light onto the current state of civic education and possibly provide us a path forward to make sure future generations will be well prepared to tackle the problems of tomorrow.</p>
-<p>Data Sets: Many of the data sets I have used thus far are from the United States Census Bureau, which has an enormous amount of statistics relating to voting in the 2016 and 2018 elections, as well as those prior. I have a few in this project so far, but if I find that I want to examine more years, I will be sure to retrieve more data sets. The data set not fromm the Census Bureau, the civic_education_requirements_by_state, came from Education Week, and contains great data on the civic education requirements of separate states. I have already tried to do some cleaning with the data, and I will not focus on cutting any unnecessary rows, changing Y and N to 1 and 0, respectively, in the civic_education_requirements_by_state dataset.I also want t ofind a way to eliminate the NAs from these tables, either by combining certain columns or finding another way to represent the table using gt() or a different function. I also want to add that I am still searching for some data on civic education curriculum/funding that would be a huge help with my project.</p>
-<p>Sources() Edweek: <a href="https://www.edweek.org/ew/section/multimedia/data-most-states-require-history-but-not.html" class="uri">https://www.edweek.org/ew/section/multimedia/data-most-states-require-history-but-not.html</a> United States Census bureau: <a href="https://www.census.gov/programs-surveys/acs/technical-documentation/code-lists.html" class="uri">https://www.census.gov/programs-surveys/acs/technical-documentation/code-lists.html</a></p>
-<pre class="r"><code>age_by_region_voting_2016 &lt;- read_xlsx(&quot;Raw-data/age_by_region_voting_2016.xlsx&quot;, skip = 6) %&gt;%
-  clean_names()</code></pre>
-<pre><code>## New names:
-## * `` -&gt; ...1
-## * `` -&gt; ...2
-## * `` -&gt; ...3
-## * `` -&gt; ...4
-## * `` -&gt; ...5
-## * ... and 14 more problems</code></pre>
-<pre class="r"><code>age_by_region_voting_2016_revised &lt;- age_by_region_voting_2016 %&gt;%
-  rename(&quot;Region&quot; = x1,
-         &quot;Region Part&quot; = x2,
-         &quot;Age&quot; = x3, 
-         &quot;Total Population&quot; = x4,
-         &quot;Total Citizen Population&quot; = x5,
-         &quot;Reported Registered (Number)&quot; = number_6,
-         &quot;Reported Registered (Percent)&quot; = percent_7,
-         &quot;Reported Not Registered (Number)&quot; = number_8,
-         &quot;Reported Not Registered (Percent)&quot; = percent_9,
-         &quot;No Response (Number)&quot; = number_10,
-         &quot;No Response (Percent)&quot; = percent_11,
-         &quot;Reported Voted (Number)&quot; = number_12,
-         &quot;Reported Voted (Percent)&quot; = percent_13,
-         &quot;Reported Not Voted (Number)&quot; = number_14,
-         &quot;Reported Not Voted (Percent)&quot; = percent_15,
-         &quot;No Response to Voting (Number)&quot; = number_16,
-         &quot;No Response to Voting (Percent)&quot; = percent_17,
-         &quot;Reported Registered&quot; = percent_18,
-         &quot;Reported Voted&quot; = percent_19)
+<div id="voting-age-by-region-2016" class="section level2">
+<h2>Voting Age by Region 2016</h2>
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
 
+#kkxxtzjmgl .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  /* table.margin.left */
+  margin-right: auto;
+  /* table.margin.right */
+  color: #333333;
+  font-size: 16px;
+  /* table.font.size */
+  background-color: #FFFFFF;
+  /* table.background.color */
+  width: auto;
+  /* table.width */
+  border-top-style: solid;
+  /* table.border.top.style */
+  border-top-width: 2px;
+  /* table.border.top.width */
+  border-top-color: #A8A8A8;
+  /* table.border.top.color */
+  border-bottom-style: solid;
+  /* table.border.bottom.style */
+  border-bottom-width: 2px;
+  /* table.border.bottom.width */
+  border-bottom-color: #A8A8A8;
+  /* table.border.bottom.color */
+}
 
-age_by_region_voting_2016_revised</code></pre>
-<pre><code>## # A tibble: 179 x 19
-##    Region `Region Part` Age   `Total Populati~ `Total Citizen ~ `Reported Regis~
-##    &lt;chr&gt;  &lt;chr&gt;         &lt;chr&gt; &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;           
-##  1 UNITE~ &lt;NA&gt;          &lt;NA&gt;  245502           224059           157596          
-##  2 NORTH~ TOTAL         Tota~ 43918            40059            28121           
-##  3 &lt;NA&gt;   &lt;NA&gt;          18 t~ 4996             4572             2598            
-##  4 &lt;NA&gt;   &lt;NA&gt;          25 t~ 14523            12556            8363            
-##  5 &lt;NA&gt;   &lt;NA&gt;          45 t~ 15180            14038            10448           
-##  6 &lt;NA&gt;   &lt;NA&gt;          65 t~ 5441             5248             4055            
-##  7 &lt;NA&gt;   &lt;NA&gt;          75 y~ 3778             3646             2657            
-##  8 &lt;NA&gt;   NEW ENGLAND   Tota~ 11570            10755            7905            
-##  9 &lt;NA&gt;   &lt;NA&gt;          18 t~ 1198             1101             626             
-## 10 &lt;NA&gt;   &lt;NA&gt;          25 t~ 3814             3391             2344            
-## # ... with 169 more rows, and 13 more variables: `Reported Registered
-## #   (Percent)` &lt;chr&gt;, `Reported Not Registered (Number)` &lt;chr&gt;, `Reported Not
-## #   Registered (Percent)` &lt;chr&gt;, `No Response (Number)` &lt;chr&gt;, `No Response
-## #   (Percent)` &lt;chr&gt;, `Reported Voted (Number)` &lt;chr&gt;, `Reported Voted
-## #   (Percent)` &lt;chr&gt;, `Reported Not Voted (Number)` &lt;chr&gt;, `Reported Not Voted
-## #   (Percent)` &lt;chr&gt;, `No Response to Voting (Number)` &lt;chr&gt;, `No Response to
-## #   Voting (Percent)` &lt;chr&gt;, `Reported Registered` &lt;chr&gt;, `Reported
-## #   Voted` &lt;dbl&gt;</code></pre>
-<pre class="r"><code>age_characteristics_voting_2018 &lt;- read_xlsx(&quot;Raw-data/age_characteristics_voting_2018.xlsx&quot;, skip = 2) %&gt;%
-  clean_names()</code></pre>
-<pre><code>## New names:
-## * `` -&gt; ...6
-## * `` -&gt; ...8
-## * `` -&gt; ...9
-## * `` -&gt; ...10
-## * `` -&gt; ...11
-## * ... and 11 more problems</code></pre>
-<pre class="r"><code>age_characteristics_voting_2018_revised &lt;- age_characteristics_voting_2018 %&gt;%
-  drop_na() %&gt;%
-  rename(&quot;Total Age 18-29 (estimate)&quot; = age,
-         &quot;Total Age 30-44 (estimate)&quot; = x11,
-         &quot;Total Age 45-64 (estimate)&quot; = x15,
-         &quot;Total Age 65+ (estimate)&quot; = x19,
-         &quot;Margin of error (MOE)&quot; = x6, 
-         &quot;Margin of error (MOE) 18-29&quot; = x8, 
-         &quot;Margin of error (MOE) 30-44&quot; = x12, 
-         &quot;Margin of error (MOE) 45-64&quot; = x16, 
-         &quot;Margin of error (MOE)65+&quot; = x20,
-         &quot;Percent of total 18-29&quot; = x9, 
-         &quot;Percent of total 30-44&quot; = x13, 
-         &quot;Percent of total 45-64&quot; = x17, 
-         &quot;Percent of total 65+&quot; = x21,
-         &quot;Percent of total margin of error (MOE) 18-29&quot; = x10, 
-         &quot;Percent of total margin of error (MOE) 30-44&quot; = x14, 
-         &quot;Percent of total margin of error (MOE) 45-64&quot; = x18, 
-         &quot;Percent of total margin of error (MOE) 65+&quot; = x22)
+#kkxxtzjmgl .gt_heading {
+  background-color: #FFFFFF;
+  /* heading.background.color */
+  border-bottom-color: #FFFFFF;
+  /* table.background.color */
+  border-left-style: hidden;
+  /* heading.border.lr.style */
+  border-left-width: 1px;
+  /* heading.border.lr.width */
+  border-left-color: #D3D3D3;
+  /* heading.border.lr.color */
+  border-right-style: hidden;
+  /* heading.border.lr.style */
+  border-right-width: 1px;
+  /* heading.border.lr.width */
+  border-right-color: #D3D3D3;
+  /* heading.border.lr.color */
+}
 
-age_characteristics_voting_2018_revised</code></pre>
-<pre><code>## # A tibble: 436 x 22
-##    line_number state_abbreviat~ state_name congressional_d~ citizen_voting_~
-##    &lt;chr&gt;       &lt;chr&gt;            &lt;chr&gt;      &lt;chr&gt;            &lt;chr&gt;           
-##  1 1           AL               Alabama    1                544464          
-##  2 2           AL               Alabama    2                516295          
-##  3 3           AL               Alabama    3                543854          
-##  4 4           AL               Alabama    4                515701          
-##  5 5           AL               Alabama    5                551968          
-##  6 6           AL               Alabama    6                535753          
-##  7 7           AL               Alabama    7                504177          
-##  8 8           AK               Alaska     At-large         532244          
-##  9 9           AZ               Arizona    1                568661          
-## 10 10          AZ               Arizona    2                550044          
-## # ... with 426 more rows, and 17 more variables: `Margin of error (MOE)` &lt;chr&gt;,
-## #   `Total Age 18-29 (estimate)` &lt;chr&gt;, `Margin of error (MOE) 18-29` &lt;chr&gt;,
-## #   `Percent of total 18-29` &lt;chr&gt;, `Percent of total margin of error (MOE)
-## #   18-29` &lt;chr&gt;, `Total Age 30-44 (estimate)` &lt;chr&gt;, `Margin of error (MOE)
-## #   30-44` &lt;chr&gt;, `Percent of total 30-44` &lt;chr&gt;, `Percent of total margin of
-## #   error (MOE) 30-44` &lt;chr&gt;, `Total Age 45-64 (estimate)` &lt;chr&gt;, `Margin of
-## #   error (MOE) 45-64` &lt;chr&gt;, `Percent of total 45-64` &lt;chr&gt;, `Percent of total
-## #   margin of error (MOE) 45-64` &lt;chr&gt;, `Total Age 65+ (estimate)` &lt;chr&gt;,
-## #   `Margin of error (MOE)65+` &lt;chr&gt;, `Percent of total 65+` &lt;chr&gt;, `Percent of
-## #   total margin of error (MOE) 65+` &lt;chr&gt;</code></pre>
-<pre class="r"><code>civic_education_requirements_by_state &lt;- read_csv(&quot;Raw-data/civic_education_requirements_by_state.csv&quot;) %&gt;%
-  clean_names()</code></pre>
-<pre><code>## Warning: Duplicated column names deduplicated: &#39;Course Span (years)&#39; =&gt; &#39;Course
-## Span (years)_1&#39; [6]</code></pre>
-<pre><code>## Parsed with column specification:
-## cols(
-##   State = col_character(),
-##   `Requires civics or government course` = col_character(),
-##   `Course Span (years)` = col_character(),
-##   `Requires civics exam to graduate` = col_character(),
-##   `Requires U.S. history course` = col_character(),
-##   `Course Span (years)_1` = col_character(),
-##   `Requires U.S. History exam to graduate` = col_character(),
-##   Notes = col_character()
-## )</code></pre>
-<pre class="r"><code>civic_education_requirements_by_state_revised &lt;- civic_education_requirements_by_state %&gt;%
-  select(-&quot;notes&quot;)
+#kkxxtzjmgl .gt_title {
+  color: #333333;
+  font-size: 125%;
+  /* heading.title.font.size */
+  font-weight: initial;
+  /* heading.title.font.weight */
+  padding-top: 4px;
+  /* heading.top.padding - not yet used */
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  /* table.background.color */
+  border-bottom-width: 0;
+}
 
-civic_education_requirements_by_state_revised</code></pre>
-<pre><code>## # A tibble: 51 x 7
-##    state requires_civics~ course_span_yea~ requires_civics~ requires_u_s_hi~
-##    &lt;chr&gt; &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;           
-##  1 Alab~ Y                0.5              Y                Y               
-##  2 Alas~ N                &lt;NA&gt;             N                N               
-##  3 Ariz~ Y                0.5              Y                Y               
-##  4 Arka~ Y                0.5              Y                Y               
-##  5 Cali~ Y                0.5              N                Y               
-##  6 Colo~ Y                1                N                N               
-##  7 Conn~ Y                0.5              N                N               
-##  8 Dela~ N                &lt;NA&gt;             N                Y               
-##  9 Dist~ Y                0.5              N                Y               
-## 10 Flor~ Y                0.5              Y                Y               
-## # ... with 41 more rows, and 2 more variables: course_span_years_1 &lt;chr&gt;,
-## #   requires_u_s_history_exam_to_graduate &lt;chr&gt;</code></pre>
-<pre class="r"><code>votes_cast_voting_age_2018 &lt;- read_xlsx(&quot;Raw-data/votes_cast_voting_age_2018.xlsx&quot;, skip = 2) %&gt;%
-  clean_names()</code></pre>
-<pre><code>## New names:
-## * `` -&gt; ...7
-## * `` -&gt; ...9</code></pre>
-<pre class="r"><code>votes_cast_voting_age_2018_revised &lt;- votes_cast_voting_age_2018 %&gt;%
-  select(-line_number) %&gt;%
-  drop_na() %&gt;%
-  rename(&quot;Votes Cast&quot; = votes_cast_for_congressional_representative_for_the_november_6_2018_election1, 
-         &quot;Number of Eligible Citizens (Estimate)&quot; = citizen_voting_age_population2,
-         &quot;Margin of Error (MOE)&quot; = x7,
-         &quot;Voting Rate&quot; = voting_rate3,
-         &quot;MOE&quot; = x9
-         )
+#kkxxtzjmgl .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  /* heading.subtitle.font.size */
+  font-weight: initial;
+  /* heading.subtitle.font.weight */
+  padding-top: 0;
+  padding-bottom: 4px;
+  /* heading.bottom.padding - not yet used */
+  border-top-color: #FFFFFF;
+  /* table.background.color */
+  border-top-width: 0;
+}
 
-votes_cast_voting_age_2018_revised</code></pre>
-<pre><code>## # A tibble: 436 x 8
-##    state_abbreviat~ state_name congressional_d~ `Votes Cast` `Number of Elig~
-##    &lt;chr&gt;            &lt;chr&gt;      &lt;chr&gt;                   &lt;dbl&gt; &lt;chr&gt;           
-##  1 AL               Alabama    1                      242617 544464          
-##  2 AL               Alabama    2                      226230 516295          
-##  3 AL               Alabama    3                      231915 543854          
-##  4 AL               Alabama    4                      230969 515701          
-##  5 AL               Alabama    5                      260673 551968          
-##  6 AL               Alabama    6                      278328 535753          
-##  7 AL               Alabama    7                      189163 504177          
-##  8 AK               Alaska     At-large               282166 532244          
-##  9 AZ               Arizona    1                      266089 568661          
-## 10 AZ               Arizona    2                      294152 550044          
-## # ... with 426 more rows, and 3 more variables: `Margin of Error (MOE)` &lt;chr&gt;,
-## #   `Voting Rate` &lt;chr&gt;, MOE &lt;chr&gt;</code></pre>
-<pre class="r"><code>recorded_voting_by_age_2016 &lt;- read_xlsx(&quot;Raw-data/recorded_voting_by_age_2016.xlsx&quot;, skip = 2) %&gt;%
-  clean_names()</code></pre>
-<pre><code>## New names:
-## * `` -&gt; ...2
-## * `` -&gt; ...3
-## * `` -&gt; ...4
-## * `` -&gt; ...5
-## * `` -&gt; ...6
-## * ... and 8 more problems</code></pre>
-<pre class="r"><code>recorded_voting_by_age_2016_revised &lt;- recorded_voting_by_age_2016 %&gt;%
-  rename(&quot;State&quot; = in_thousands,
-         &quot;Age&quot; = x2,
-         &quot;Total Population&quot; = x3,
-         &quot;Total Citizen Population&quot; = x4,
-         &quot;Total Registered&quot; = x5,
-         &quot;Total Registered (Percent)&quot; = x6,
-         &quot;Margin of Error (MOE)&quot; = x7,
-         &quot;Percent Registered (Citizen)&quot; = x8,
-         &quot;MOE&quot; = x9,
-         &quot;Total Voted&quot; = x10,
-         &quot;Total Voted (Percent)&quot; = x11,
-         &quot;MOE_3&quot; = x12,
-         &quot;Percent Voted (Citizen)&quot; = x13,
-         &quot;MOE_4&quot; = x14)
+#kkxxtzjmgl .gt_bottom_border {
+  border-bottom-style: solid;
+  /* heading.border.bottom.style */
+  border-bottom-width: 2px;
+  /* heading.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* heading.border.bottom.color */
+}
 
+#kkxxtzjmgl .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
 
-recorded_voting_by_age_2016_revised</code></pre>
-<pre><code>## # A tibble: 319 x 14
-##    State Age   `Total Populati~ `Total Citizen ~ `Total Register~
-##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;           
-##  1 STATE Age   Total Population Total Citizen P~ Registered      
-##  2 &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;             &lt;NA&gt;             Total registered
-##  3 US    Total 245502           224059           157596          
-##  4 &lt;NA&gt;  18 t~ 29320            26913            14905           
-##  5 &lt;NA&gt;  25 t~ 43794            38283            24682           
-##  6 &lt;NA&gt;  35 t~ 39905            34327            23948           
-##  7 &lt;NA&gt;  45 t~ 83799            77544            57394           
-##  8 &lt;NA&gt;  65+   48684            46993            36667           
-##  9 ALAB~ Total 3717             3651             2526            
-## 10 &lt;NA&gt;  18 t~ 513              497              283             
-## # ... with 309 more rows, and 9 more variables: `Total Registered
-## #   (Percent)` &lt;chr&gt;, `Margin of Error (MOE)` &lt;chr&gt;, `Percent Registered
-## #   (Citizen)` &lt;chr&gt;, MOE &lt;chr&gt;, `Total Voted` &lt;chr&gt;, `Total Voted
-## #   (Percent)` &lt;chr&gt;, MOE_3 &lt;chr&gt;, `Percent Voted (Citizen)` &lt;chr&gt;, MOE_4 &lt;chr&gt;</code></pre>
+#kkxxtzjmgl .gt_col_headings {
+  border-top-style: solid;
+  /* column_labels.border.top.style */
+  border-top-width: 2px;
+  /* column_labels.border.top.width */
+  border-top-color: #D3D3D3;
+  /* column_labels.border.top.color */
+  border-bottom-style: solid;
+  /* column_labels.border.bottom.style */
+  border-bottom-width: 2px;
+  /* column_labels.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* column_labels.border.bottom.color */
+  border-left-style: none;
+  /* column_labels.border.lr.style */
+  border-left-width: 1px;
+  /* column_labels.border.lr.width */
+  border-left-color: #D3D3D3;
+  /* column_labels.border.lr.color */
+  border-right-style: none;
+  /* column_labels.border.lr.style */
+  border-right-width: 1px;
+  /* column_labels.border.lr.width */
+  border-right-color: #D3D3D3;
+  /* column_labels.border.lr.color */
+}
+
+#kkxxtzjmgl .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* column_labels.background.color */
+  font-size: 100%;
+  /* column_labels.font.size */
+  font-weight: normal;
+  /* column_labels.font.weight */
+  text-transform: inherit;
+  /* column_labels.text_transform */
+  vertical-align: middle;
+  padding: 5px;
+  margin: 10px;
+  overflow-x: hidden;
+}
+
+#kkxxtzjmgl .gt_sep_right {
+  border-right: 5px solid #FFFFFF;
+}
+
+#kkxxtzjmgl .gt_group_heading {
+  padding: 8px;
+  /* row_group.padding */
+  color: #333333;
+  background-color: #FFFFFF;
+  /* row_group.background.color */
+  font-size: 100%;
+  /* row_group.font.size */
+  font-weight: initial;
+  /* row_group.font.weight */
+  text-transform: inherit;
+  /* row_group.text_transform */
+  border-top-style: solid;
+  /* row_group.border.top.style */
+  border-top-width: 2px;
+  /* row_group.border.top.width */
+  border-top-color: #D3D3D3;
+  /* row_group.border.top.color */
+  border-bottom-style: solid;
+  /* row_group.border.bottom.style */
+  border-bottom-width: 2px;
+  /* row_group.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* row_group.border.bottom.color */
+  border-left-style: none;
+  /* row_group.border.left.style */
+  border-left-width: 1px;
+  /* row_group.border.left.width */
+  border-left-color: #D3D3D3;
+  /* row_group.border.left.color */
+  border-right-style: none;
+  /* row_group.border.right.style */
+  border-right-width: 1px;
+  /* row_group.border.right.width */
+  border-right-color: #D3D3D3;
+  /* row_group.border.right.color */
+  vertical-align: middle;
+}
+
+#kkxxtzjmgl .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  /* row_group.background.color */
+  font-size: 100%;
+  /* row_group.font.size */
+  font-weight: initial;
+  /* row_group.font.weight */
+  border-top-style: solid;
+  /* row_group.border.top.style */
+  border-top-width: 2px;
+  /* row_group.border.top.width */
+  border-top-color: #D3D3D3;
+  /* row_group.border.top.color */
+  border-bottom-style: solid;
+  /* row_group.border.bottom.style */
+  border-bottom-width: 2px;
+  /* row_group.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* row_group.border.bottom.color */
+  vertical-align: middle;
+}
+
+#kkxxtzjmgl .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+  /* row.striping.background_color */
+}
+
+#kkxxtzjmgl .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#kkxxtzjmgl .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#kkxxtzjmgl .gt_row {
+  padding-top: 8px;
+  /* data_row.padding */
+  padding-bottom: 8px;
+  /* data_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  /* table_body.hlines.style */
+  border-top-width: 1px;
+  /* table_body.hlines.width */
+  border-top-color: #D3D3D3;
+  /* table_body.hlines.color */
+  border-left-style: none;
+  /* table_body.vlines.style */
+  border-left-width: 1px;
+  /* table_body.vlines.width */
+  border-left-color: #D3D3D3;
+  /* table_body.vlines.color */
+  border-right-style: none;
+  /* table_body.vlines.style */
+  border-right-width: 1px;
+  /* table_body.vlines.width */
+  border-right-color: #D3D3D3;
+  /* table_body.vlines.color */
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#kkxxtzjmgl .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* stub.background.color */
+  font-weight: initial;
+  /* stub.font.weight */
+  text-transform: inherit;
+  /* stub.text_transform */
+  border-right-style: solid;
+  /* stub.border.style */
+  border-right-width: 2px;
+  /* stub.border.width */
+  border-right-color: #D3D3D3;
+  /* stub.border.color */
+  padding-left: 12px;
+}
+
+#kkxxtzjmgl .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* summary_row.background.color */
+  text-transform: inherit;
+  /* summary_row.text_transform */
+  padding-top: 8px;
+  /* summary_row.padding */
+  padding-bottom: 8px;
+  /* summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kkxxtzjmgl .gt_first_summary_row {
+  padding-top: 8px;
+  /* summary_row.padding */
+  padding-bottom: 8px;
+  /* summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  /* summary_row.border.style */
+  border-top-width: 2px;
+  /* summary_row.border.width */
+  border-top-color: #D3D3D3;
+  /* summary_row.border.color */
+}
+
+#kkxxtzjmgl .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* grand_summary_row.background.color */
+  text-transform: inherit;
+  /* grand_summary_row.text_transform */
+  padding-top: 8px;
+  /* grand_summary_row.padding */
+  padding-bottom: 8px;
+  /* grand_summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kkxxtzjmgl .gt_first_grand_summary_row {
+  padding-top: 8px;
+  /* grand_summary_row.padding */
+  padding-bottom: 8px;
+  /* grand_summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  /* grand_summary_row.border.style */
+  border-top-width: 6px;
+  /* grand_summary_row.border.width */
+  border-top-color: #D3D3D3;
+  /* grand_summary_row.border.color */
+}
+
+#kkxxtzjmgl .gt_table_body {
+  border-top-style: solid;
+  /* table_body.border.top.style */
+  border-top-width: 2px;
+  /* table_body.border.top.width */
+  border-top-color: #D3D3D3;
+  /* table_body.border.top.color */
+  border-bottom-style: solid;
+  /* table_body.border.bottom.style */
+  border-bottom-width: 2px;
+  /* table_body.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* table_body.border.bottom.color */
+}
+
+#kkxxtzjmgl .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* footnotes.background.color */
+  border-bottom-style: none;
+  /* footnotes.border.bottom.style */
+  border-bottom-width: 2px;
+  /* footnotes.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* footnotes.border.bottom.color */
+  border-left-style: none;
+  /* footnotes.border.lr.color */
+  border-left-width: 2px;
+  /* footnotes.border.lr.color */
+  border-left-color: #D3D3D3;
+  /* footnotes.border.lr.color */
+  border-right-style: none;
+  /* footnotes.border.lr.color */
+  border-right-width: 2px;
+  /* footnotes.border.lr.color */
+  border-right-color: #D3D3D3;
+  /* footnotes.border.lr.color */
+}
+
+#kkxxtzjmgl .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  /* footnotes.font.size */
+  padding: 4px;
+  /* footnotes.padding */
+}
+
+#kkxxtzjmgl .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* source_notes.background.color */
+  border-bottom-style: none;
+  /* source_notes.border.bottom.style */
+  border-bottom-width: 2px;
+  /* source_notes.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* source_notes.border.bottom.color */
+  border-left-style: none;
+  /* source_notes.border.lr.style */
+  border-left-width: 2px;
+  /* source_notes.border.lr.style */
+  border-left-color: #D3D3D3;
+  /* source_notes.border.lr.style */
+  border-right-style: none;
+  /* source_notes.border.lr.style */
+  border-right-width: 2px;
+  /* source_notes.border.lr.style */
+  border-right-color: #D3D3D3;
+  /* source_notes.border.lr.style */
+}
+
+#kkxxtzjmgl .gt_sourcenote {
+  font-size: 90%;
+  /* source_notes.font.size */
+  padding: 4px;
+  /* source_notes.padding */
+}
+
+#kkxxtzjmgl .gt_left {
+  text-align: left;
+}
+
+#kkxxtzjmgl .gt_center {
+  text-align: center;
+}
+
+#kkxxtzjmgl .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#kkxxtzjmgl .gt_font_normal {
+  font-weight: normal;
+}
+
+#kkxxtzjmgl .gt_font_bold {
+  font-weight: bold;
+}
+
+#kkxxtzjmgl .gt_font_italic {
+  font-style: italic;
+}
+
+#kkxxtzjmgl .gt_super {
+  font-size: 65%;
+}
+
+#kkxxtzjmgl .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="kkxxtzjmgl" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Region</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Region Part</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Age</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Total Population</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Total Citizen Population</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Reported Registered (Number)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Reported Registered (Percent)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Reported Not Registered (Number)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Reported Not Registered (Percent)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">No Response (Number)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">No Response (Percent)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Reported Voted (Number)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Reported Voted (Percent)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Reported Not Voted (Number)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Reported Not Voted (Percent)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">No Response to Voting (Number)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">No Response to Voting (Percent)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Reported Registered</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Reported Voted</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_left">UNITED STATES</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">245502</td>
+      <td class="gt_row gt_left">224059</td>
+      <td class="gt_row gt_left">157596</td>
+      <td class="gt_row gt_left">70.3</td>
+      <td class="gt_row gt_left">32622</td>
+      <td class="gt_row gt_left">14.6</td>
+      <td class="gt_row gt_left">33841</td>
+      <td class="gt_row gt_left">15.1</td>
+      <td class="gt_row gt_left">137537</td>
+      <td class="gt_row gt_left">61.4</td>
+      <td class="gt_row gt_left">53860</td>
+      <td class="gt_row gt_left">24</td>
+      <td class="gt_row gt_left">32662</td>
+      <td class="gt_row gt_left">14.6</td>
+      <td class="gt_row gt_left">64.2</td>
+      <td class="gt_row gt_right">56.0</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">NORTHEAST</td>
+      <td class="gt_row gt_left gt_striped">TOTAL</td>
+      <td class="gt_row gt_left gt_striped">Total 18 years and over</td>
+      <td class="gt_row gt_left gt_striped">43918</td>
+      <td class="gt_row gt_left gt_striped">40059</td>
+      <td class="gt_row gt_left gt_striped">28121</td>
+      <td class="gt_row gt_left gt_striped">70.2</td>
+      <td class="gt_row gt_left gt_striped">5505</td>
+      <td class="gt_row gt_left gt_striped">13.7</td>
+      <td class="gt_row gt_left gt_striped">6433</td>
+      <td class="gt_row gt_left gt_striped">16.100000000000001</td>
+      <td class="gt_row gt_left gt_striped">24664</td>
+      <td class="gt_row gt_left gt_striped">61.6</td>
+      <td class="gt_row gt_left gt_striped">9159</td>
+      <td class="gt_row gt_left gt_striped">22.9</td>
+      <td class="gt_row gt_left gt_striped">6236</td>
+      <td class="gt_row gt_left gt_striped">15.6</td>
+      <td class="gt_row gt_left gt_striped">64</td>
+      <td class="gt_row gt_right gt_striped">56.2</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">18 to 24 years</td>
+      <td class="gt_row gt_left">4996</td>
+      <td class="gt_row gt_left">4572</td>
+      <td class="gt_row gt_left">2598</td>
+      <td class="gt_row gt_left">56.8</td>
+      <td class="gt_row gt_left">1003</td>
+      <td class="gt_row gt_left">21.9</td>
+      <td class="gt_row gt_left">971</td>
+      <td class="gt_row gt_left">21.2</td>
+      <td class="gt_row gt_left">1992</td>
+      <td class="gt_row gt_left">43.6</td>
+      <td class="gt_row gt_left">1631</td>
+      <td class="gt_row gt_left">35.700000000000003</td>
+      <td class="gt_row gt_left">949</td>
+      <td class="gt_row gt_left">20.8</td>
+      <td class="gt_row gt_left">52</td>
+      <td class="gt_row gt_right">39.9</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">NA</td>
+      <td class="gt_row gt_left gt_striped">NA</td>
+      <td class="gt_row gt_left gt_striped">25 to 44 years</td>
+      <td class="gt_row gt_left gt_striped">14523</td>
+      <td class="gt_row gt_left gt_striped">12556</td>
+      <td class="gt_row gt_left gt_striped">8363</td>
+      <td class="gt_row gt_left gt_striped">66.599999999999994</td>
+      <td class="gt_row gt_left gt_striped">2041</td>
+      <td class="gt_row gt_left gt_striped">16.3</td>
+      <td class="gt_row gt_left gt_striped">2152</td>
+      <td class="gt_row gt_left gt_striped">17.100000000000001</td>
+      <td class="gt_row gt_left gt_striped">7219</td>
+      <td class="gt_row gt_left gt_striped">57.5</td>
+      <td class="gt_row gt_left gt_striped">3253</td>
+      <td class="gt_row gt_left gt_striped">25.9</td>
+      <td class="gt_row gt_left gt_striped">2084</td>
+      <td class="gt_row gt_left gt_striped">16.600000000000001</td>
+      <td class="gt_row gt_left gt_striped">57.6</td>
+      <td class="gt_row gt_right gt_striped">49.7</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">45 to 64 years</td>
+      <td class="gt_row gt_left">15180</td>
+      <td class="gt_row gt_left">14038</td>
+      <td class="gt_row gt_left">10448</td>
+      <td class="gt_row gt_left">74.400000000000006</td>
+      <td class="gt_row gt_left">1508</td>
+      <td class="gt_row gt_left">10.7</td>
+      <td class="gt_row gt_left">2082</td>
+      <td class="gt_row gt_left">14.8</td>
+      <td class="gt_row gt_left">9439</td>
+      <td class="gt_row gt_left">67.2</td>
+      <td class="gt_row gt_left">2556</td>
+      <td class="gt_row gt_left">18.2</td>
+      <td class="gt_row gt_left">2043</td>
+      <td class="gt_row gt_left">14.6</td>
+      <td class="gt_row gt_left">68.8</td>
+      <td class="gt_row gt_right">62.2</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">NA</td>
+      <td class="gt_row gt_left gt_striped">NA</td>
+      <td class="gt_row gt_left gt_striped">65 to 74 years</td>
+      <td class="gt_row gt_left gt_striped">5441</td>
+      <td class="gt_row gt_left gt_striped">5248</td>
+      <td class="gt_row gt_left gt_striped">4055</td>
+      <td class="gt_row gt_left gt_striped">77.3</td>
+      <td class="gt_row gt_left gt_striped">488</td>
+      <td class="gt_row gt_left gt_striped">9.3000000000000007</td>
+      <td class="gt_row gt_left gt_striped">705</td>
+      <td class="gt_row gt_left gt_striped">13.4</td>
+      <td class="gt_row gt_left gt_striped">3737</td>
+      <td class="gt_row gt_left gt_striped">71.2</td>
+      <td class="gt_row gt_left gt_striped">818</td>
+      <td class="gt_row gt_left gt_striped">15.6</td>
+      <td class="gt_row gt_left gt_striped">693</td>
+      <td class="gt_row gt_left gt_striped">13.2</td>
+      <td class="gt_row gt_left gt_striped">74.5</td>
+      <td class="gt_row gt_right gt_striped">68.7</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">75 years and over</td>
+      <td class="gt_row gt_left">3778</td>
+      <td class="gt_row gt_left">3646</td>
+      <td class="gt_row gt_left">2657</td>
+      <td class="gt_row gt_left">72.900000000000006</td>
+      <td class="gt_row gt_left">464</td>
+      <td class="gt_row gt_left">12.7</td>
+      <td class="gt_row gt_left">524</td>
+      <td class="gt_row gt_left">14.4</td>
+      <td class="gt_row gt_left">2278</td>
+      <td class="gt_row gt_left">62.5</td>
+      <td class="gt_row gt_left">901</td>
+      <td class="gt_row gt_left">24.7</td>
+      <td class="gt_row gt_left">466</td>
+      <td class="gt_row gt_left">12.8</td>
+      <td class="gt_row gt_left">70.3</td>
+      <td class="gt_row gt_right">60.3</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">NA</td>
+      <td class="gt_row gt_left gt_striped">NEW ENGLAND</td>
+      <td class="gt_row gt_left gt_striped">Total 18 years and over</td>
+      <td class="gt_row gt_left gt_striped">11570</td>
+      <td class="gt_row gt_left gt_striped">10755</td>
+      <td class="gt_row gt_left gt_striped">7905</td>
+      <td class="gt_row gt_left gt_striped">73.5</td>
+      <td class="gt_row gt_left gt_striped">1244</td>
+      <td class="gt_row gt_left gt_striped">11.6</td>
+      <td class="gt_row gt_left gt_striped">1606</td>
+      <td class="gt_row gt_left gt_striped">14.9</td>
+      <td class="gt_row gt_left gt_striped">7122</td>
+      <td class="gt_row gt_left gt_striped">66.2</td>
+      <td class="gt_row gt_left gt_striped">2044</td>
+      <td class="gt_row gt_left gt_striped">19</td>
+      <td class="gt_row gt_left gt_striped">1588</td>
+      <td class="gt_row gt_left gt_striped">14.8</td>
+      <td class="gt_row gt_left gt_striped">68.3</td>
+      <td class="gt_row gt_right gt_striped">61.6</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">18 to 24 years</td>
+      <td class="gt_row gt_left">1198</td>
+      <td class="gt_row gt_left">1101</td>
+      <td class="gt_row gt_left">626</td>
+      <td class="gt_row gt_left">56.9</td>
+      <td class="gt_row gt_left">236</td>
+      <td class="gt_row gt_left">21.4</td>
+      <td class="gt_row gt_left">239</td>
+      <td class="gt_row gt_left">21.7</td>
+      <td class="gt_row gt_left">498</td>
+      <td class="gt_row gt_left">45.2</td>
+      <td class="gt_row gt_left">358</td>
+      <td class="gt_row gt_left">32.5</td>
+      <td class="gt_row gt_left">245</td>
+      <td class="gt_row gt_left">22.2</td>
+      <td class="gt_row gt_left">52.3</td>
+      <td class="gt_row gt_right">41.6</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">NA</td>
+      <td class="gt_row gt_left gt_striped">NA</td>
+      <td class="gt_row gt_left gt_striped">25 to 44 years</td>
+      <td class="gt_row gt_left gt_striped">3814</td>
+      <td class="gt_row gt_left gt_striped">3391</td>
+      <td class="gt_row gt_left gt_striped">2344</td>
+      <td class="gt_row gt_left gt_striped">69.099999999999994</td>
+      <td class="gt_row gt_left gt_striped">512</td>
+      <td class="gt_row gt_left gt_striped">15.1</td>
+      <td class="gt_row gt_left gt_striped">536</td>
+      <td class="gt_row gt_left gt_striped">15.8</td>
+      <td class="gt_row gt_left gt_striped">2095</td>
+      <td class="gt_row gt_left gt_striped">61.8</td>
+      <td class="gt_row gt_left gt_striped">777</td>
+      <td class="gt_row gt_left gt_striped">22.9</td>
+      <td class="gt_row gt_left gt_striped">520</td>
+      <td class="gt_row gt_left gt_striped">15.3</td>
+      <td class="gt_row gt_left gt_striped">61.5</td>
+      <td class="gt_row gt_right gt_striped">54.9</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+</div>
+<div id="age-characteristics-of-voters-2018" class="section level2">
+<h2>Age Characteristics of Voters 2018</h2>
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#xcbqtkremg .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  /* table.margin.left */
+  margin-right: auto;
+  /* table.margin.right */
+  color: #333333;
+  font-size: 16px;
+  /* table.font.size */
+  background-color: #FFFFFF;
+  /* table.background.color */
+  width: auto;
+  /* table.width */
+  border-top-style: solid;
+  /* table.border.top.style */
+  border-top-width: 2px;
+  /* table.border.top.width */
+  border-top-color: #A8A8A8;
+  /* table.border.top.color */
+  border-bottom-style: solid;
+  /* table.border.bottom.style */
+  border-bottom-width: 2px;
+  /* table.border.bottom.width */
+  border-bottom-color: #A8A8A8;
+  /* table.border.bottom.color */
+}
+
+#xcbqtkremg .gt_heading {
+  background-color: #FFFFFF;
+  /* heading.background.color */
+  border-bottom-color: #FFFFFF;
+  /* table.background.color */
+  border-left-style: hidden;
+  /* heading.border.lr.style */
+  border-left-width: 1px;
+  /* heading.border.lr.width */
+  border-left-color: #D3D3D3;
+  /* heading.border.lr.color */
+  border-right-style: hidden;
+  /* heading.border.lr.style */
+  border-right-width: 1px;
+  /* heading.border.lr.width */
+  border-right-color: #D3D3D3;
+  /* heading.border.lr.color */
+}
+
+#xcbqtkremg .gt_title {
+  color: #333333;
+  font-size: 125%;
+  /* heading.title.font.size */
+  font-weight: initial;
+  /* heading.title.font.weight */
+  padding-top: 4px;
+  /* heading.top.padding - not yet used */
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  /* table.background.color */
+  border-bottom-width: 0;
+}
+
+#xcbqtkremg .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  /* heading.subtitle.font.size */
+  font-weight: initial;
+  /* heading.subtitle.font.weight */
+  padding-top: 0;
+  padding-bottom: 4px;
+  /* heading.bottom.padding - not yet used */
+  border-top-color: #FFFFFF;
+  /* table.background.color */
+  border-top-width: 0;
+}
+
+#xcbqtkremg .gt_bottom_border {
+  border-bottom-style: solid;
+  /* heading.border.bottom.style */
+  border-bottom-width: 2px;
+  /* heading.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* heading.border.bottom.color */
+}
+
+#xcbqtkremg .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#xcbqtkremg .gt_col_headings {
+  border-top-style: solid;
+  /* column_labels.border.top.style */
+  border-top-width: 2px;
+  /* column_labels.border.top.width */
+  border-top-color: #D3D3D3;
+  /* column_labels.border.top.color */
+  border-bottom-style: solid;
+  /* column_labels.border.bottom.style */
+  border-bottom-width: 2px;
+  /* column_labels.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* column_labels.border.bottom.color */
+  border-left-style: none;
+  /* column_labels.border.lr.style */
+  border-left-width: 1px;
+  /* column_labels.border.lr.width */
+  border-left-color: #D3D3D3;
+  /* column_labels.border.lr.color */
+  border-right-style: none;
+  /* column_labels.border.lr.style */
+  border-right-width: 1px;
+  /* column_labels.border.lr.width */
+  border-right-color: #D3D3D3;
+  /* column_labels.border.lr.color */
+}
+
+#xcbqtkremg .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* column_labels.background.color */
+  font-size: 100%;
+  /* column_labels.font.size */
+  font-weight: normal;
+  /* column_labels.font.weight */
+  text-transform: inherit;
+  /* column_labels.text_transform */
+  vertical-align: middle;
+  padding: 5px;
+  margin: 10px;
+  overflow-x: hidden;
+}
+
+#xcbqtkremg .gt_sep_right {
+  border-right: 5px solid #FFFFFF;
+}
+
+#xcbqtkremg .gt_group_heading {
+  padding: 8px;
+  /* row_group.padding */
+  color: #333333;
+  background-color: #FFFFFF;
+  /* row_group.background.color */
+  font-size: 100%;
+  /* row_group.font.size */
+  font-weight: initial;
+  /* row_group.font.weight */
+  text-transform: inherit;
+  /* row_group.text_transform */
+  border-top-style: solid;
+  /* row_group.border.top.style */
+  border-top-width: 2px;
+  /* row_group.border.top.width */
+  border-top-color: #D3D3D3;
+  /* row_group.border.top.color */
+  border-bottom-style: solid;
+  /* row_group.border.bottom.style */
+  border-bottom-width: 2px;
+  /* row_group.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* row_group.border.bottom.color */
+  border-left-style: none;
+  /* row_group.border.left.style */
+  border-left-width: 1px;
+  /* row_group.border.left.width */
+  border-left-color: #D3D3D3;
+  /* row_group.border.left.color */
+  border-right-style: none;
+  /* row_group.border.right.style */
+  border-right-width: 1px;
+  /* row_group.border.right.width */
+  border-right-color: #D3D3D3;
+  /* row_group.border.right.color */
+  vertical-align: middle;
+}
+
+#xcbqtkremg .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  /* row_group.background.color */
+  font-size: 100%;
+  /* row_group.font.size */
+  font-weight: initial;
+  /* row_group.font.weight */
+  border-top-style: solid;
+  /* row_group.border.top.style */
+  border-top-width: 2px;
+  /* row_group.border.top.width */
+  border-top-color: #D3D3D3;
+  /* row_group.border.top.color */
+  border-bottom-style: solid;
+  /* row_group.border.bottom.style */
+  border-bottom-width: 2px;
+  /* row_group.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* row_group.border.bottom.color */
+  vertical-align: middle;
+}
+
+#xcbqtkremg .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+  /* row.striping.background_color */
+}
+
+#xcbqtkremg .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#xcbqtkremg .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#xcbqtkremg .gt_row {
+  padding-top: 8px;
+  /* data_row.padding */
+  padding-bottom: 8px;
+  /* data_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  /* table_body.hlines.style */
+  border-top-width: 1px;
+  /* table_body.hlines.width */
+  border-top-color: #D3D3D3;
+  /* table_body.hlines.color */
+  border-left-style: none;
+  /* table_body.vlines.style */
+  border-left-width: 1px;
+  /* table_body.vlines.width */
+  border-left-color: #D3D3D3;
+  /* table_body.vlines.color */
+  border-right-style: none;
+  /* table_body.vlines.style */
+  border-right-width: 1px;
+  /* table_body.vlines.width */
+  border-right-color: #D3D3D3;
+  /* table_body.vlines.color */
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#xcbqtkremg .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* stub.background.color */
+  font-weight: initial;
+  /* stub.font.weight */
+  text-transform: inherit;
+  /* stub.text_transform */
+  border-right-style: solid;
+  /* stub.border.style */
+  border-right-width: 2px;
+  /* stub.border.width */
+  border-right-color: #D3D3D3;
+  /* stub.border.color */
+  padding-left: 12px;
+}
+
+#xcbqtkremg .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* summary_row.background.color */
+  text-transform: inherit;
+  /* summary_row.text_transform */
+  padding-top: 8px;
+  /* summary_row.padding */
+  padding-bottom: 8px;
+  /* summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#xcbqtkremg .gt_first_summary_row {
+  padding-top: 8px;
+  /* summary_row.padding */
+  padding-bottom: 8px;
+  /* summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  /* summary_row.border.style */
+  border-top-width: 2px;
+  /* summary_row.border.width */
+  border-top-color: #D3D3D3;
+  /* summary_row.border.color */
+}
+
+#xcbqtkremg .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* grand_summary_row.background.color */
+  text-transform: inherit;
+  /* grand_summary_row.text_transform */
+  padding-top: 8px;
+  /* grand_summary_row.padding */
+  padding-bottom: 8px;
+  /* grand_summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#xcbqtkremg .gt_first_grand_summary_row {
+  padding-top: 8px;
+  /* grand_summary_row.padding */
+  padding-bottom: 8px;
+  /* grand_summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  /* grand_summary_row.border.style */
+  border-top-width: 6px;
+  /* grand_summary_row.border.width */
+  border-top-color: #D3D3D3;
+  /* grand_summary_row.border.color */
+}
+
+#xcbqtkremg .gt_table_body {
+  border-top-style: solid;
+  /* table_body.border.top.style */
+  border-top-width: 2px;
+  /* table_body.border.top.width */
+  border-top-color: #D3D3D3;
+  /* table_body.border.top.color */
+  border-bottom-style: solid;
+  /* table_body.border.bottom.style */
+  border-bottom-width: 2px;
+  /* table_body.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* table_body.border.bottom.color */
+}
+
+#xcbqtkremg .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* footnotes.background.color */
+  border-bottom-style: none;
+  /* footnotes.border.bottom.style */
+  border-bottom-width: 2px;
+  /* footnotes.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* footnotes.border.bottom.color */
+  border-left-style: none;
+  /* footnotes.border.lr.color */
+  border-left-width: 2px;
+  /* footnotes.border.lr.color */
+  border-left-color: #D3D3D3;
+  /* footnotes.border.lr.color */
+  border-right-style: none;
+  /* footnotes.border.lr.color */
+  border-right-width: 2px;
+  /* footnotes.border.lr.color */
+  border-right-color: #D3D3D3;
+  /* footnotes.border.lr.color */
+}
+
+#xcbqtkremg .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  /* footnotes.font.size */
+  padding: 4px;
+  /* footnotes.padding */
+}
+
+#xcbqtkremg .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* source_notes.background.color */
+  border-bottom-style: none;
+  /* source_notes.border.bottom.style */
+  border-bottom-width: 2px;
+  /* source_notes.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* source_notes.border.bottom.color */
+  border-left-style: none;
+  /* source_notes.border.lr.style */
+  border-left-width: 2px;
+  /* source_notes.border.lr.style */
+  border-left-color: #D3D3D3;
+  /* source_notes.border.lr.style */
+  border-right-style: none;
+  /* source_notes.border.lr.style */
+  border-right-width: 2px;
+  /* source_notes.border.lr.style */
+  border-right-color: #D3D3D3;
+  /* source_notes.border.lr.style */
+}
+
+#xcbqtkremg .gt_sourcenote {
+  font-size: 90%;
+  /* source_notes.font.size */
+  padding: 4px;
+  /* source_notes.padding */
+}
+
+#xcbqtkremg .gt_left {
+  text-align: left;
+}
+
+#xcbqtkremg .gt_center {
+  text-align: center;
+}
+
+#xcbqtkremg .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#xcbqtkremg .gt_font_normal {
+  font-weight: normal;
+}
+
+#xcbqtkremg .gt_font_bold {
+  font-weight: bold;
+}
+
+#xcbqtkremg .gt_font_italic {
+  font-style: italic;
+}
+
+#xcbqtkremg .gt_super {
+  font-size: 65%;
+}
+
+#xcbqtkremg .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="xcbqtkremg" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">line_number</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">state_abbreviation</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">state_name</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">congressional_district</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">citizen_voting_age_population</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Margin of error (MOE)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Total Age 18-29 (estimate)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Margin of error (MOE) 18-29</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Percent of total 18-29</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Percent of total margin of error (MOE) 18-29</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Total Age 30-44 (estimate)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Margin of error (MOE) 30-44</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Percent of total 30-44</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Percent of total margin of error (MOE) 30-44</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Total Age 45-64 (estimate)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Margin of error (MOE) 45-64</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Percent of total 45-64</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Percent of total margin of error (MOE) 45-64</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Total Age 65+ (estimate)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Margin of error (MOE)65+</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Percent of total 65+</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Percent of total margin of error (MOE) 65+</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_left">1</td>
+      <td class="gt_row gt_left">AL</td>
+      <td class="gt_row gt_left">Alabama</td>
+      <td class="gt_row gt_left">1</td>
+      <td class="gt_row gt_left">544464</td>
+      <td class="gt_row gt_left">3424</td>
+      <td class="gt_row gt_left">104060</td>
+      <td class="gt_row gt_left">2412</td>
+      <td class="gt_row gt_left">19.100000000000001</td>
+      <td class="gt_row gt_left">0.4</td>
+      <td class="gt_row gt_left">125900</td>
+      <td class="gt_row gt_left">2538</td>
+      <td class="gt_row gt_left">23.1</td>
+      <td class="gt_row gt_left">0.5</td>
+      <td class="gt_row gt_left">188031</td>
+      <td class="gt_row gt_left">3186</td>
+      <td class="gt_row gt_left">34.5</td>
+      <td class="gt_row gt_left">0.5</td>
+      <td class="gt_row gt_left">126473</td>
+      <td class="gt_row gt_left">1797</td>
+      <td class="gt_row gt_left">23.2</td>
+      <td class="gt_row gt_left">0.3</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">2</td>
+      <td class="gt_row gt_left gt_striped">AL</td>
+      <td class="gt_row gt_left gt_striped">Alabama</td>
+      <td class="gt_row gt_left gt_striped">2</td>
+      <td class="gt_row gt_left gt_striped">516295</td>
+      <td class="gt_row gt_left gt_striped">5674</td>
+      <td class="gt_row gt_left gt_striped">109222</td>
+      <td class="gt_row gt_left gt_striped">2918</td>
+      <td class="gt_row gt_left gt_striped">21.2</td>
+      <td class="gt_row gt_left gt_striped">0.5</td>
+      <td class="gt_row gt_left gt_striped">118999</td>
+      <td class="gt_row gt_left gt_striped">3146</td>
+      <td class="gt_row gt_left gt_striped">23</td>
+      <td class="gt_row gt_left gt_striped">0.5</td>
+      <td class="gt_row gt_left gt_striped">173351</td>
+      <td class="gt_row gt_left gt_striped">3069</td>
+      <td class="gt_row gt_left gt_striped">33.6</td>
+      <td class="gt_row gt_left gt_striped">0.5</td>
+      <td class="gt_row gt_left gt_striped">114723</td>
+      <td class="gt_row gt_left gt_striped">2059</td>
+      <td class="gt_row gt_left gt_striped">22.2</td>
+      <td class="gt_row gt_left gt_striped">0.4</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">3</td>
+      <td class="gt_row gt_left">AL</td>
+      <td class="gt_row gt_left">Alabama</td>
+      <td class="gt_row gt_left">3</td>
+      <td class="gt_row gt_left">543854</td>
+      <td class="gt_row gt_left">4099</td>
+      <td class="gt_row gt_left">121328</td>
+      <td class="gt_row gt_left">2379</td>
+      <td class="gt_row gt_left">22.3</td>
+      <td class="gt_row gt_left">0.4</td>
+      <td class="gt_row gt_left">121212</td>
+      <td class="gt_row gt_left">3483</td>
+      <td class="gt_row gt_left">22.3</td>
+      <td class="gt_row gt_left">0.6</td>
+      <td class="gt_row gt_left">182379</td>
+      <td class="gt_row gt_left">3899</td>
+      <td class="gt_row gt_left">33.5</td>
+      <td class="gt_row gt_left">0.7</td>
+      <td class="gt_row gt_left">118935</td>
+      <td class="gt_row gt_left">1851</td>
+      <td class="gt_row gt_left">21.9</td>
+      <td class="gt_row gt_left">0.3</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">4</td>
+      <td class="gt_row gt_left gt_striped">AL</td>
+      <td class="gt_row gt_left gt_striped">Alabama</td>
+      <td class="gt_row gt_left gt_striped">4</td>
+      <td class="gt_row gt_left gt_striped">515701</td>
+      <td class="gt_row gt_left gt_striped">4678</td>
+      <td class="gt_row gt_left gt_striped">95990</td>
+      <td class="gt_row gt_left gt_striped">2777</td>
+      <td class="gt_row gt_left gt_striped">18.600000000000001</td>
+      <td class="gt_row gt_left gt_striped">0.5</td>
+      <td class="gt_row gt_left gt_striped">114921</td>
+      <td class="gt_row gt_left gt_striped">2560</td>
+      <td class="gt_row gt_left gt_striped">22.3</td>
+      <td class="gt_row gt_left gt_striped">0.5</td>
+      <td class="gt_row gt_left gt_striped">177247</td>
+      <td class="gt_row gt_left gt_striped">3022</td>
+      <td class="gt_row gt_left gt_striped">34.4</td>
+      <td class="gt_row gt_left gt_striped">0.5</td>
+      <td class="gt_row gt_left gt_striped">127543</td>
+      <td class="gt_row gt_left gt_striped">2309</td>
+      <td class="gt_row gt_left gt_striped">24.7</td>
+      <td class="gt_row gt_left gt_striped">0.4</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">5</td>
+      <td class="gt_row gt_left">AL</td>
+      <td class="gt_row gt_left">Alabama</td>
+      <td class="gt_row gt_left">5</td>
+      <td class="gt_row gt_left">551968</td>
+      <td class="gt_row gt_left">2121</td>
+      <td class="gt_row gt_left">109986</td>
+      <td class="gt_row gt_left">1624</td>
+      <td class="gt_row gt_left">19.899999999999999</td>
+      <td class="gt_row gt_left">0.3</td>
+      <td class="gt_row gt_left">129788</td>
+      <td class="gt_row gt_left">1913</td>
+      <td class="gt_row gt_left">23.5</td>
+      <td class="gt_row gt_left">0.3</td>
+      <td class="gt_row gt_left">193348</td>
+      <td class="gt_row gt_left">1995</td>
+      <td class="gt_row gt_left">35</td>
+      <td class="gt_row gt_left">0.4</td>
+      <td class="gt_row gt_left">118846</td>
+      <td class="gt_row gt_left">1412</td>
+      <td class="gt_row gt_left">21.5</td>
+      <td class="gt_row gt_left">0.3</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">6</td>
+      <td class="gt_row gt_left gt_striped">AL</td>
+      <td class="gt_row gt_left gt_striped">Alabama</td>
+      <td class="gt_row gt_left gt_striped">6</td>
+      <td class="gt_row gt_left gt_striped">535753</td>
+      <td class="gt_row gt_left gt_striped">7635</td>
+      <td class="gt_row gt_left gt_striped">101646</td>
+      <td class="gt_row gt_left gt_striped">4222</td>
+      <td class="gt_row gt_left gt_striped">19</td>
+      <td class="gt_row gt_left gt_striped">0.7</td>
+      <td class="gt_row gt_left gt_striped">133635</td>
+      <td class="gt_row gt_left gt_striped">4599</td>
+      <td class="gt_row gt_left gt_striped">24.9</td>
+      <td class="gt_row gt_left gt_striped">0.8</td>
+      <td class="gt_row gt_left gt_striped">182710</td>
+      <td class="gt_row gt_left gt_striped">4171</td>
+      <td class="gt_row gt_left gt_striped">34.1</td>
+      <td class="gt_row gt_left gt_striped">0.6</td>
+      <td class="gt_row gt_left gt_striped">117762</td>
+      <td class="gt_row gt_left gt_striped">2727</td>
+      <td class="gt_row gt_left gt_striped">22</td>
+      <td class="gt_row gt_left gt_striped">0.5</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">7</td>
+      <td class="gt_row gt_left">AL</td>
+      <td class="gt_row gt_left">Alabama</td>
+      <td class="gt_row gt_left">7</td>
+      <td class="gt_row gt_left">504177</td>
+      <td class="gt_row gt_left">9052</td>
+      <td class="gt_row gt_left">126572</td>
+      <td class="gt_row gt_left">5253</td>
+      <td class="gt_row gt_left">25.1</td>
+      <td class="gt_row gt_left">0.8</td>
+      <td class="gt_row gt_left">114337</td>
+      <td class="gt_row gt_left">5109</td>
+      <td class="gt_row gt_left">22.7</td>
+      <td class="gt_row gt_left">1</td>
+      <td class="gt_row gt_left">162887</td>
+      <td class="gt_row gt_left">5505</td>
+      <td class="gt_row gt_left">32.299999999999997</td>
+      <td class="gt_row gt_left">0.9</td>
+      <td class="gt_row gt_left">100381</td>
+      <td class="gt_row gt_left">3261</td>
+      <td class="gt_row gt_left">19.899999999999999</td>
+      <td class="gt_row gt_left">0.7</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">8</td>
+      <td class="gt_row gt_left gt_striped">AK</td>
+      <td class="gt_row gt_left gt_striped">Alaska</td>
+      <td class="gt_row gt_left gt_striped">At-large</td>
+      <td class="gt_row gt_left gt_striped">532244</td>
+      <td class="gt_row gt_left gt_striped">2539</td>
+      <td class="gt_row gt_left gt_striped">127476</td>
+      <td class="gt_row gt_left gt_striped">1829</td>
+      <td class="gt_row gt_left gt_striped">24</td>
+      <td class="gt_row gt_left gt_striped">0.3</td>
+      <td class="gt_row gt_left gt_striped">144647</td>
+      <td class="gt_row gt_left gt_striped">2629</td>
+      <td class="gt_row gt_left gt_striped">27.2</td>
+      <td class="gt_row gt_left gt_striped">0.5</td>
+      <td class="gt_row gt_left gt_striped">174789</td>
+      <td class="gt_row gt_left gt_striped">3032</td>
+      <td class="gt_row gt_left gt_striped">32.799999999999997</td>
+      <td class="gt_row gt_left gt_striped">0.5</td>
+      <td class="gt_row gt_left gt_striped">85332</td>
+      <td class="gt_row gt_left gt_striped">1468</td>
+      <td class="gt_row gt_left gt_striped">16</td>
+      <td class="gt_row gt_left gt_striped">0.3</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">9</td>
+      <td class="gt_row gt_left">AZ</td>
+      <td class="gt_row gt_left">Arizona</td>
+      <td class="gt_row gt_left">1</td>
+      <td class="gt_row gt_left">568661</td>
+      <td class="gt_row gt_left">9203</td>
+      <td class="gt_row gt_left">124100</td>
+      <td class="gt_row gt_left">4886</td>
+      <td class="gt_row gt_left">21.8</td>
+      <td class="gt_row gt_left">0.7</td>
+      <td class="gt_row gt_left">129362</td>
+      <td class="gt_row gt_left">4892</td>
+      <td class="gt_row gt_left">22.7</td>
+      <td class="gt_row gt_left">0.8</td>
+      <td class="gt_row gt_left">169734</td>
+      <td class="gt_row gt_left">4410</td>
+      <td class="gt_row gt_left">29.8</td>
+      <td class="gt_row gt_left">0.6</td>
+      <td class="gt_row gt_left">145465</td>
+      <td class="gt_row gt_left">4443</td>
+      <td class="gt_row gt_left">25.6</td>
+      <td class="gt_row gt_left">0.7</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">10</td>
+      <td class="gt_row gt_left gt_striped">AZ</td>
+      <td class="gt_row gt_left gt_striped">Arizona</td>
+      <td class="gt_row gt_left gt_striped">2</td>
+      <td class="gt_row gt_left gt_striped">550044</td>
+      <td class="gt_row gt_left gt_striped">9439</td>
+      <td class="gt_row gt_left gt_striped">116061</td>
+      <td class="gt_row gt_left gt_striped">6026</td>
+      <td class="gt_row gt_left gt_striped">21.1</td>
+      <td class="gt_row gt_left gt_striped">0.9</td>
+      <td class="gt_row gt_left gt_striped">114471</td>
+      <td class="gt_row gt_left gt_striped">3938</td>
+      <td class="gt_row gt_left gt_striped">20.8</td>
+      <td class="gt_row gt_left gt_striped">0.7</td>
+      <td class="gt_row gt_left gt_striped">166939</td>
+      <td class="gt_row gt_left gt_striped">4774</td>
+      <td class="gt_row gt_left gt_striped">30.4</td>
+      <td class="gt_row gt_left gt_striped">0.7</td>
+      <td class="gt_row gt_left gt_striped">152573</td>
+      <td class="gt_row gt_left gt_striped">4037</td>
+      <td class="gt_row gt_left gt_striped">27.7</td>
+      <td class="gt_row gt_left gt_striped">0.8</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+</div>
+<div id="civic-education-requirements-by-state" class="section level2">
+<h2>Civic Education Requirements by State</h2>
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#wtstbhydjj .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  /* table.margin.left */
+  margin-right: auto;
+  /* table.margin.right */
+  color: #333333;
+  font-size: 16px;
+  /* table.font.size */
+  background-color: #FFFFFF;
+  /* table.background.color */
+  width: auto;
+  /* table.width */
+  border-top-style: solid;
+  /* table.border.top.style */
+  border-top-width: 2px;
+  /* table.border.top.width */
+  border-top-color: #A8A8A8;
+  /* table.border.top.color */
+  border-bottom-style: solid;
+  /* table.border.bottom.style */
+  border-bottom-width: 2px;
+  /* table.border.bottom.width */
+  border-bottom-color: #A8A8A8;
+  /* table.border.bottom.color */
+}
+
+#wtstbhydjj .gt_heading {
+  background-color: #FFFFFF;
+  /* heading.background.color */
+  border-bottom-color: #FFFFFF;
+  /* table.background.color */
+  border-left-style: hidden;
+  /* heading.border.lr.style */
+  border-left-width: 1px;
+  /* heading.border.lr.width */
+  border-left-color: #D3D3D3;
+  /* heading.border.lr.color */
+  border-right-style: hidden;
+  /* heading.border.lr.style */
+  border-right-width: 1px;
+  /* heading.border.lr.width */
+  border-right-color: #D3D3D3;
+  /* heading.border.lr.color */
+}
+
+#wtstbhydjj .gt_title {
+  color: #333333;
+  font-size: 125%;
+  /* heading.title.font.size */
+  font-weight: initial;
+  /* heading.title.font.weight */
+  padding-top: 4px;
+  /* heading.top.padding - not yet used */
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  /* table.background.color */
+  border-bottom-width: 0;
+}
+
+#wtstbhydjj .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  /* heading.subtitle.font.size */
+  font-weight: initial;
+  /* heading.subtitle.font.weight */
+  padding-top: 0;
+  padding-bottom: 4px;
+  /* heading.bottom.padding - not yet used */
+  border-top-color: #FFFFFF;
+  /* table.background.color */
+  border-top-width: 0;
+}
+
+#wtstbhydjj .gt_bottom_border {
+  border-bottom-style: solid;
+  /* heading.border.bottom.style */
+  border-bottom-width: 2px;
+  /* heading.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* heading.border.bottom.color */
+}
+
+#wtstbhydjj .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#wtstbhydjj .gt_col_headings {
+  border-top-style: solid;
+  /* column_labels.border.top.style */
+  border-top-width: 2px;
+  /* column_labels.border.top.width */
+  border-top-color: #D3D3D3;
+  /* column_labels.border.top.color */
+  border-bottom-style: solid;
+  /* column_labels.border.bottom.style */
+  border-bottom-width: 2px;
+  /* column_labels.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* column_labels.border.bottom.color */
+  border-left-style: none;
+  /* column_labels.border.lr.style */
+  border-left-width: 1px;
+  /* column_labels.border.lr.width */
+  border-left-color: #D3D3D3;
+  /* column_labels.border.lr.color */
+  border-right-style: none;
+  /* column_labels.border.lr.style */
+  border-right-width: 1px;
+  /* column_labels.border.lr.width */
+  border-right-color: #D3D3D3;
+  /* column_labels.border.lr.color */
+}
+
+#wtstbhydjj .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* column_labels.background.color */
+  font-size: 100%;
+  /* column_labels.font.size */
+  font-weight: normal;
+  /* column_labels.font.weight */
+  text-transform: inherit;
+  /* column_labels.text_transform */
+  vertical-align: middle;
+  padding: 5px;
+  margin: 10px;
+  overflow-x: hidden;
+}
+
+#wtstbhydjj .gt_sep_right {
+  border-right: 5px solid #FFFFFF;
+}
+
+#wtstbhydjj .gt_group_heading {
+  padding: 8px;
+  /* row_group.padding */
+  color: #333333;
+  background-color: #FFFFFF;
+  /* row_group.background.color */
+  font-size: 100%;
+  /* row_group.font.size */
+  font-weight: initial;
+  /* row_group.font.weight */
+  text-transform: inherit;
+  /* row_group.text_transform */
+  border-top-style: solid;
+  /* row_group.border.top.style */
+  border-top-width: 2px;
+  /* row_group.border.top.width */
+  border-top-color: #D3D3D3;
+  /* row_group.border.top.color */
+  border-bottom-style: solid;
+  /* row_group.border.bottom.style */
+  border-bottom-width: 2px;
+  /* row_group.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* row_group.border.bottom.color */
+  border-left-style: none;
+  /* row_group.border.left.style */
+  border-left-width: 1px;
+  /* row_group.border.left.width */
+  border-left-color: #D3D3D3;
+  /* row_group.border.left.color */
+  border-right-style: none;
+  /* row_group.border.right.style */
+  border-right-width: 1px;
+  /* row_group.border.right.width */
+  border-right-color: #D3D3D3;
+  /* row_group.border.right.color */
+  vertical-align: middle;
+}
+
+#wtstbhydjj .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  /* row_group.background.color */
+  font-size: 100%;
+  /* row_group.font.size */
+  font-weight: initial;
+  /* row_group.font.weight */
+  border-top-style: solid;
+  /* row_group.border.top.style */
+  border-top-width: 2px;
+  /* row_group.border.top.width */
+  border-top-color: #D3D3D3;
+  /* row_group.border.top.color */
+  border-bottom-style: solid;
+  /* row_group.border.bottom.style */
+  border-bottom-width: 2px;
+  /* row_group.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* row_group.border.bottom.color */
+  vertical-align: middle;
+}
+
+#wtstbhydjj .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+  /* row.striping.background_color */
+}
+
+#wtstbhydjj .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#wtstbhydjj .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#wtstbhydjj .gt_row {
+  padding-top: 8px;
+  /* data_row.padding */
+  padding-bottom: 8px;
+  /* data_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  /* table_body.hlines.style */
+  border-top-width: 1px;
+  /* table_body.hlines.width */
+  border-top-color: #D3D3D3;
+  /* table_body.hlines.color */
+  border-left-style: none;
+  /* table_body.vlines.style */
+  border-left-width: 1px;
+  /* table_body.vlines.width */
+  border-left-color: #D3D3D3;
+  /* table_body.vlines.color */
+  border-right-style: none;
+  /* table_body.vlines.style */
+  border-right-width: 1px;
+  /* table_body.vlines.width */
+  border-right-color: #D3D3D3;
+  /* table_body.vlines.color */
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#wtstbhydjj .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* stub.background.color */
+  font-weight: initial;
+  /* stub.font.weight */
+  text-transform: inherit;
+  /* stub.text_transform */
+  border-right-style: solid;
+  /* stub.border.style */
+  border-right-width: 2px;
+  /* stub.border.width */
+  border-right-color: #D3D3D3;
+  /* stub.border.color */
+  padding-left: 12px;
+}
+
+#wtstbhydjj .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* summary_row.background.color */
+  text-transform: inherit;
+  /* summary_row.text_transform */
+  padding-top: 8px;
+  /* summary_row.padding */
+  padding-bottom: 8px;
+  /* summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wtstbhydjj .gt_first_summary_row {
+  padding-top: 8px;
+  /* summary_row.padding */
+  padding-bottom: 8px;
+  /* summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  /* summary_row.border.style */
+  border-top-width: 2px;
+  /* summary_row.border.width */
+  border-top-color: #D3D3D3;
+  /* summary_row.border.color */
+}
+
+#wtstbhydjj .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* grand_summary_row.background.color */
+  text-transform: inherit;
+  /* grand_summary_row.text_transform */
+  padding-top: 8px;
+  /* grand_summary_row.padding */
+  padding-bottom: 8px;
+  /* grand_summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#wtstbhydjj .gt_first_grand_summary_row {
+  padding-top: 8px;
+  /* grand_summary_row.padding */
+  padding-bottom: 8px;
+  /* grand_summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  /* grand_summary_row.border.style */
+  border-top-width: 6px;
+  /* grand_summary_row.border.width */
+  border-top-color: #D3D3D3;
+  /* grand_summary_row.border.color */
+}
+
+#wtstbhydjj .gt_table_body {
+  border-top-style: solid;
+  /* table_body.border.top.style */
+  border-top-width: 2px;
+  /* table_body.border.top.width */
+  border-top-color: #D3D3D3;
+  /* table_body.border.top.color */
+  border-bottom-style: solid;
+  /* table_body.border.bottom.style */
+  border-bottom-width: 2px;
+  /* table_body.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* table_body.border.bottom.color */
+}
+
+#wtstbhydjj .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* footnotes.background.color */
+  border-bottom-style: none;
+  /* footnotes.border.bottom.style */
+  border-bottom-width: 2px;
+  /* footnotes.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* footnotes.border.bottom.color */
+  border-left-style: none;
+  /* footnotes.border.lr.color */
+  border-left-width: 2px;
+  /* footnotes.border.lr.color */
+  border-left-color: #D3D3D3;
+  /* footnotes.border.lr.color */
+  border-right-style: none;
+  /* footnotes.border.lr.color */
+  border-right-width: 2px;
+  /* footnotes.border.lr.color */
+  border-right-color: #D3D3D3;
+  /* footnotes.border.lr.color */
+}
+
+#wtstbhydjj .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  /* footnotes.font.size */
+  padding: 4px;
+  /* footnotes.padding */
+}
+
+#wtstbhydjj .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* source_notes.background.color */
+  border-bottom-style: none;
+  /* source_notes.border.bottom.style */
+  border-bottom-width: 2px;
+  /* source_notes.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* source_notes.border.bottom.color */
+  border-left-style: none;
+  /* source_notes.border.lr.style */
+  border-left-width: 2px;
+  /* source_notes.border.lr.style */
+  border-left-color: #D3D3D3;
+  /* source_notes.border.lr.style */
+  border-right-style: none;
+  /* source_notes.border.lr.style */
+  border-right-width: 2px;
+  /* source_notes.border.lr.style */
+  border-right-color: #D3D3D3;
+  /* source_notes.border.lr.style */
+}
+
+#wtstbhydjj .gt_sourcenote {
+  font-size: 90%;
+  /* source_notes.font.size */
+  padding: 4px;
+  /* source_notes.padding */
+}
+
+#wtstbhydjj .gt_left {
+  text-align: left;
+}
+
+#wtstbhydjj .gt_center {
+  text-align: center;
+}
+
+#wtstbhydjj .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#wtstbhydjj .gt_font_normal {
+  font-weight: normal;
+}
+
+#wtstbhydjj .gt_font_bold {
+  font-weight: bold;
+}
+
+#wtstbhydjj .gt_font_italic {
+  font-style: italic;
+}
+
+#wtstbhydjj .gt_super {
+  font-size: 65%;
+}
+
+#wtstbhydjj .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="wtstbhydjj" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">state</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">requires_civics_or_government_course</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">course_span_years</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">requires_civics_exam_to_graduate</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">requires_u_s_history_course</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">course_span_years_1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">requires_u_s_history_exam_to_graduate</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_left">Alabama</td>
+      <td class="gt_row gt_left">Y</td>
+      <td class="gt_row gt_left">0.5</td>
+      <td class="gt_row gt_left">Y</td>
+      <td class="gt_row gt_left">Y</td>
+      <td class="gt_row gt_left">2</td>
+      <td class="gt_row gt_left">N</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">Alaska</td>
+      <td class="gt_row gt_left gt_striped">N</td>
+      <td class="gt_row gt_left gt_striped">NA</td>
+      <td class="gt_row gt_left gt_striped">N</td>
+      <td class="gt_row gt_left gt_striped">N</td>
+      <td class="gt_row gt_left gt_striped">NA</td>
+      <td class="gt_row gt_left gt_striped">N</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">Arizona</td>
+      <td class="gt_row gt_left">Y</td>
+      <td class="gt_row gt_left">0.5</td>
+      <td class="gt_row gt_left">Y</td>
+      <td class="gt_row gt_left">Y</td>
+      <td class="gt_row gt_left">1</td>
+      <td class="gt_row gt_left">N</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">Arkansas</td>
+      <td class="gt_row gt_left gt_striped">Y</td>
+      <td class="gt_row gt_left gt_striped">0.5</td>
+      <td class="gt_row gt_left gt_striped">Y</td>
+      <td class="gt_row gt_left gt_striped">Y</td>
+      <td class="gt_row gt_left gt_striped">1</td>
+      <td class="gt_row gt_left gt_striped">N</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">California</td>
+      <td class="gt_row gt_left">Y</td>
+      <td class="gt_row gt_left">0.5</td>
+      <td class="gt_row gt_left">N</td>
+      <td class="gt_row gt_left">Y</td>
+      <td class="gt_row gt_left">1</td>
+      <td class="gt_row gt_left">N</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">Colorado</td>
+      <td class="gt_row gt_left gt_striped">Y</td>
+      <td class="gt_row gt_left gt_striped">1</td>
+      <td class="gt_row gt_left gt_striped">N</td>
+      <td class="gt_row gt_left gt_striped">N</td>
+      <td class="gt_row gt_left gt_striped">NA</td>
+      <td class="gt_row gt_left gt_striped">N</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">Connecticut</td>
+      <td class="gt_row gt_left">Y</td>
+      <td class="gt_row gt_left">0.5</td>
+      <td class="gt_row gt_left">N</td>
+      <td class="gt_row gt_left">N</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">N</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">Delaware</td>
+      <td class="gt_row gt_left gt_striped">N</td>
+      <td class="gt_row gt_left gt_striped">NA</td>
+      <td class="gt_row gt_left gt_striped">N</td>
+      <td class="gt_row gt_left gt_striped">Y</td>
+      <td class="gt_row gt_left gt_striped">0.5-1</td>
+      <td class="gt_row gt_left gt_striped">N</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">District of Columbia</td>
+      <td class="gt_row gt_left">Y</td>
+      <td class="gt_row gt_left">0.5</td>
+      <td class="gt_row gt_left">N</td>
+      <td class="gt_row gt_left">Y</td>
+      <td class="gt_row gt_left">1</td>
+      <td class="gt_row gt_left">N</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">Florida</td>
+      <td class="gt_row gt_left gt_striped">Y</td>
+      <td class="gt_row gt_left gt_striped">0.5</td>
+      <td class="gt_row gt_left gt_striped">Y</td>
+      <td class="gt_row gt_left gt_striped">Y</td>
+      <td class="gt_row gt_left gt_striped">1</td>
+      <td class="gt_row gt_left gt_striped">Y</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+</div>
+<div id="votes-cast-by-voting-age-2018" class="section level2">
+<h2>Votes Cast by Voting Age 2018</h2>
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#nutxicsmor .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  /* table.margin.left */
+  margin-right: auto;
+  /* table.margin.right */
+  color: #333333;
+  font-size: 16px;
+  /* table.font.size */
+  background-color: #FFFFFF;
+  /* table.background.color */
+  width: auto;
+  /* table.width */
+  border-top-style: solid;
+  /* table.border.top.style */
+  border-top-width: 2px;
+  /* table.border.top.width */
+  border-top-color: #A8A8A8;
+  /* table.border.top.color */
+  border-bottom-style: solid;
+  /* table.border.bottom.style */
+  border-bottom-width: 2px;
+  /* table.border.bottom.width */
+  border-bottom-color: #A8A8A8;
+  /* table.border.bottom.color */
+}
+
+#nutxicsmor .gt_heading {
+  background-color: #FFFFFF;
+  /* heading.background.color */
+  border-bottom-color: #FFFFFF;
+  /* table.background.color */
+  border-left-style: hidden;
+  /* heading.border.lr.style */
+  border-left-width: 1px;
+  /* heading.border.lr.width */
+  border-left-color: #D3D3D3;
+  /* heading.border.lr.color */
+  border-right-style: hidden;
+  /* heading.border.lr.style */
+  border-right-width: 1px;
+  /* heading.border.lr.width */
+  border-right-color: #D3D3D3;
+  /* heading.border.lr.color */
+}
+
+#nutxicsmor .gt_title {
+  color: #333333;
+  font-size: 125%;
+  /* heading.title.font.size */
+  font-weight: initial;
+  /* heading.title.font.weight */
+  padding-top: 4px;
+  /* heading.top.padding - not yet used */
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  /* table.background.color */
+  border-bottom-width: 0;
+}
+
+#nutxicsmor .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  /* heading.subtitle.font.size */
+  font-weight: initial;
+  /* heading.subtitle.font.weight */
+  padding-top: 0;
+  padding-bottom: 4px;
+  /* heading.bottom.padding - not yet used */
+  border-top-color: #FFFFFF;
+  /* table.background.color */
+  border-top-width: 0;
+}
+
+#nutxicsmor .gt_bottom_border {
+  border-bottom-style: solid;
+  /* heading.border.bottom.style */
+  border-bottom-width: 2px;
+  /* heading.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* heading.border.bottom.color */
+}
+
+#nutxicsmor .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#nutxicsmor .gt_col_headings {
+  border-top-style: solid;
+  /* column_labels.border.top.style */
+  border-top-width: 2px;
+  /* column_labels.border.top.width */
+  border-top-color: #D3D3D3;
+  /* column_labels.border.top.color */
+  border-bottom-style: solid;
+  /* column_labels.border.bottom.style */
+  border-bottom-width: 2px;
+  /* column_labels.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* column_labels.border.bottom.color */
+  border-left-style: none;
+  /* column_labels.border.lr.style */
+  border-left-width: 1px;
+  /* column_labels.border.lr.width */
+  border-left-color: #D3D3D3;
+  /* column_labels.border.lr.color */
+  border-right-style: none;
+  /* column_labels.border.lr.style */
+  border-right-width: 1px;
+  /* column_labels.border.lr.width */
+  border-right-color: #D3D3D3;
+  /* column_labels.border.lr.color */
+}
+
+#nutxicsmor .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* column_labels.background.color */
+  font-size: 100%;
+  /* column_labels.font.size */
+  font-weight: normal;
+  /* column_labels.font.weight */
+  text-transform: inherit;
+  /* column_labels.text_transform */
+  vertical-align: middle;
+  padding: 5px;
+  margin: 10px;
+  overflow-x: hidden;
+}
+
+#nutxicsmor .gt_sep_right {
+  border-right: 5px solid #FFFFFF;
+}
+
+#nutxicsmor .gt_group_heading {
+  padding: 8px;
+  /* row_group.padding */
+  color: #333333;
+  background-color: #FFFFFF;
+  /* row_group.background.color */
+  font-size: 100%;
+  /* row_group.font.size */
+  font-weight: initial;
+  /* row_group.font.weight */
+  text-transform: inherit;
+  /* row_group.text_transform */
+  border-top-style: solid;
+  /* row_group.border.top.style */
+  border-top-width: 2px;
+  /* row_group.border.top.width */
+  border-top-color: #D3D3D3;
+  /* row_group.border.top.color */
+  border-bottom-style: solid;
+  /* row_group.border.bottom.style */
+  border-bottom-width: 2px;
+  /* row_group.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* row_group.border.bottom.color */
+  border-left-style: none;
+  /* row_group.border.left.style */
+  border-left-width: 1px;
+  /* row_group.border.left.width */
+  border-left-color: #D3D3D3;
+  /* row_group.border.left.color */
+  border-right-style: none;
+  /* row_group.border.right.style */
+  border-right-width: 1px;
+  /* row_group.border.right.width */
+  border-right-color: #D3D3D3;
+  /* row_group.border.right.color */
+  vertical-align: middle;
+}
+
+#nutxicsmor .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  /* row_group.background.color */
+  font-size: 100%;
+  /* row_group.font.size */
+  font-weight: initial;
+  /* row_group.font.weight */
+  border-top-style: solid;
+  /* row_group.border.top.style */
+  border-top-width: 2px;
+  /* row_group.border.top.width */
+  border-top-color: #D3D3D3;
+  /* row_group.border.top.color */
+  border-bottom-style: solid;
+  /* row_group.border.bottom.style */
+  border-bottom-width: 2px;
+  /* row_group.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* row_group.border.bottom.color */
+  vertical-align: middle;
+}
+
+#nutxicsmor .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+  /* row.striping.background_color */
+}
+
+#nutxicsmor .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#nutxicsmor .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#nutxicsmor .gt_row {
+  padding-top: 8px;
+  /* data_row.padding */
+  padding-bottom: 8px;
+  /* data_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  /* table_body.hlines.style */
+  border-top-width: 1px;
+  /* table_body.hlines.width */
+  border-top-color: #D3D3D3;
+  /* table_body.hlines.color */
+  border-left-style: none;
+  /* table_body.vlines.style */
+  border-left-width: 1px;
+  /* table_body.vlines.width */
+  border-left-color: #D3D3D3;
+  /* table_body.vlines.color */
+  border-right-style: none;
+  /* table_body.vlines.style */
+  border-right-width: 1px;
+  /* table_body.vlines.width */
+  border-right-color: #D3D3D3;
+  /* table_body.vlines.color */
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#nutxicsmor .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* stub.background.color */
+  font-weight: initial;
+  /* stub.font.weight */
+  text-transform: inherit;
+  /* stub.text_transform */
+  border-right-style: solid;
+  /* stub.border.style */
+  border-right-width: 2px;
+  /* stub.border.width */
+  border-right-color: #D3D3D3;
+  /* stub.border.color */
+  padding-left: 12px;
+}
+
+#nutxicsmor .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* summary_row.background.color */
+  text-transform: inherit;
+  /* summary_row.text_transform */
+  padding-top: 8px;
+  /* summary_row.padding */
+  padding-bottom: 8px;
+  /* summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nutxicsmor .gt_first_summary_row {
+  padding-top: 8px;
+  /* summary_row.padding */
+  padding-bottom: 8px;
+  /* summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  /* summary_row.border.style */
+  border-top-width: 2px;
+  /* summary_row.border.width */
+  border-top-color: #D3D3D3;
+  /* summary_row.border.color */
+}
+
+#nutxicsmor .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* grand_summary_row.background.color */
+  text-transform: inherit;
+  /* grand_summary_row.text_transform */
+  padding-top: 8px;
+  /* grand_summary_row.padding */
+  padding-bottom: 8px;
+  /* grand_summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#nutxicsmor .gt_first_grand_summary_row {
+  padding-top: 8px;
+  /* grand_summary_row.padding */
+  padding-bottom: 8px;
+  /* grand_summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  /* grand_summary_row.border.style */
+  border-top-width: 6px;
+  /* grand_summary_row.border.width */
+  border-top-color: #D3D3D3;
+  /* grand_summary_row.border.color */
+}
+
+#nutxicsmor .gt_table_body {
+  border-top-style: solid;
+  /* table_body.border.top.style */
+  border-top-width: 2px;
+  /* table_body.border.top.width */
+  border-top-color: #D3D3D3;
+  /* table_body.border.top.color */
+  border-bottom-style: solid;
+  /* table_body.border.bottom.style */
+  border-bottom-width: 2px;
+  /* table_body.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* table_body.border.bottom.color */
+}
+
+#nutxicsmor .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* footnotes.background.color */
+  border-bottom-style: none;
+  /* footnotes.border.bottom.style */
+  border-bottom-width: 2px;
+  /* footnotes.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* footnotes.border.bottom.color */
+  border-left-style: none;
+  /* footnotes.border.lr.color */
+  border-left-width: 2px;
+  /* footnotes.border.lr.color */
+  border-left-color: #D3D3D3;
+  /* footnotes.border.lr.color */
+  border-right-style: none;
+  /* footnotes.border.lr.color */
+  border-right-width: 2px;
+  /* footnotes.border.lr.color */
+  border-right-color: #D3D3D3;
+  /* footnotes.border.lr.color */
+}
+
+#nutxicsmor .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  /* footnotes.font.size */
+  padding: 4px;
+  /* footnotes.padding */
+}
+
+#nutxicsmor .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* source_notes.background.color */
+  border-bottom-style: none;
+  /* source_notes.border.bottom.style */
+  border-bottom-width: 2px;
+  /* source_notes.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* source_notes.border.bottom.color */
+  border-left-style: none;
+  /* source_notes.border.lr.style */
+  border-left-width: 2px;
+  /* source_notes.border.lr.style */
+  border-left-color: #D3D3D3;
+  /* source_notes.border.lr.style */
+  border-right-style: none;
+  /* source_notes.border.lr.style */
+  border-right-width: 2px;
+  /* source_notes.border.lr.style */
+  border-right-color: #D3D3D3;
+  /* source_notes.border.lr.style */
+}
+
+#nutxicsmor .gt_sourcenote {
+  font-size: 90%;
+  /* source_notes.font.size */
+  padding: 4px;
+  /* source_notes.padding */
+}
+
+#nutxicsmor .gt_left {
+  text-align: left;
+}
+
+#nutxicsmor .gt_center {
+  text-align: center;
+}
+
+#nutxicsmor .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#nutxicsmor .gt_font_normal {
+  font-weight: normal;
+}
+
+#nutxicsmor .gt_font_bold {
+  font-weight: bold;
+}
+
+#nutxicsmor .gt_font_italic {
+  font-style: italic;
+}
+
+#nutxicsmor .gt_super {
+  font-size: 65%;
+}
+
+#nutxicsmor .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="nutxicsmor" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">state_abbreviation</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">state_name</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">congressional_district</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">Votes Cast</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Number of Eligible Citizens (Estimate)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Margin of Error (MOE)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Voting Rate</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">MOE</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_left">AL</td>
+      <td class="gt_row gt_left">Alabama</td>
+      <td class="gt_row gt_left">1</td>
+      <td class="gt_row gt_right">242617</td>
+      <td class="gt_row gt_left">544464</td>
+      <td class="gt_row gt_left">3424</td>
+      <td class="gt_row gt_left">44.560705574656915</td>
+      <td class="gt_row gt_left">0.28023130250599726</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">AL</td>
+      <td class="gt_row gt_left gt_striped">Alabama</td>
+      <td class="gt_row gt_left gt_striped">2</td>
+      <td class="gt_row gt_right gt_striped">226230</td>
+      <td class="gt_row gt_left gt_striped">516295</td>
+      <td class="gt_row gt_left gt_striped">5674</td>
+      <td class="gt_row gt_left gt_striped">43.817972283287652</td>
+      <td class="gt_row gt_left gt_striped">0.48155255180734691</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">AL</td>
+      <td class="gt_row gt_left">Alabama</td>
+      <td class="gt_row gt_left">3</td>
+      <td class="gt_row gt_right">231915</td>
+      <td class="gt_row gt_left">543854</td>
+      <td class="gt_row gt_left">4099</td>
+      <td class="gt_row gt_left">42.642878419575844</td>
+      <td class="gt_row gt_left">0.32139721072538108</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">AL</td>
+      <td class="gt_row gt_left gt_striped">Alabama</td>
+      <td class="gt_row gt_left gt_striped">4</td>
+      <td class="gt_row gt_right gt_striped">230969</td>
+      <td class="gt_row gt_left gt_striped">515701</td>
+      <td class="gt_row gt_left gt_striped">4678</td>
+      <td class="gt_row gt_left gt_striped">44.787386489458036</td>
+      <td class="gt_row gt_left gt_striped">0.40627300315043929</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">AL</td>
+      <td class="gt_row gt_left">Alabama</td>
+      <td class="gt_row gt_left">5</td>
+      <td class="gt_row gt_right">260673</td>
+      <td class="gt_row gt_left">551968</td>
+      <td class="gt_row gt_left">2121</td>
+      <td class="gt_row gt_left">47.226107310568729</td>
+      <td class="gt_row gt_left">0.18147170416711889</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">AL</td>
+      <td class="gt_row gt_left gt_striped">Alabama</td>
+      <td class="gt_row gt_left gt_striped">6</td>
+      <td class="gt_row gt_right gt_striped">278328</td>
+      <td class="gt_row gt_left gt_striped">535753</td>
+      <td class="gt_row gt_left gt_striped">7635</td>
+      <td class="gt_row gt_left gt_striped">51.950805688442244</td>
+      <td class="gt_row gt_left gt_striped">0.7403493800898111</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">AL</td>
+      <td class="gt_row gt_left">Alabama</td>
+      <td class="gt_row gt_left">7</td>
+      <td class="gt_row gt_right">189163</td>
+      <td class="gt_row gt_left">504177</td>
+      <td class="gt_row gt_left">9052</td>
+      <td class="gt_row gt_left">37.519164896455017</td>
+      <td class="gt_row gt_left">0.67361954361803655</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">AK</td>
+      <td class="gt_row gt_left gt_striped">Alaska</td>
+      <td class="gt_row gt_left gt_striped">At-large</td>
+      <td class="gt_row gt_right gt_striped">282166</td>
+      <td class="gt_row gt_left gt_striped">532244</td>
+      <td class="gt_row gt_left gt_striped">2539</td>
+      <td class="gt_row gt_left gt_striped">53.014406926146648</td>
+      <td class="gt_row gt_left gt_striped">0.25289825565997237</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">AZ</td>
+      <td class="gt_row gt_left">Arizona</td>
+      <td class="gt_row gt_left">1</td>
+      <td class="gt_row gt_right">266089</td>
+      <td class="gt_row gt_left">568661</td>
+      <td class="gt_row gt_left">9203</td>
+      <td class="gt_row gt_left">46.792201329087099</td>
+      <td class="gt_row gt_left">0.75726773742456155</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">AZ</td>
+      <td class="gt_row gt_left gt_striped">Arizona</td>
+      <td class="gt_row gt_left gt_striped">2</td>
+      <td class="gt_row gt_right gt_striped">294152</td>
+      <td class="gt_row gt_left gt_striped">550044</td>
+      <td class="gt_row gt_left gt_striped">9439</td>
+      <td class="gt_row gt_left gt_striped">53.47790358589495</td>
+      <td class="gt_row gt_left gt_striped">0.91770464171459454</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+</div>
+<div id="recorded-voting-by-age-2016" class="section level2">
+<h2>Recorded Voting by Age 2016</h2>
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#uqxgbexpoz .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  /* table.margin.left */
+  margin-right: auto;
+  /* table.margin.right */
+  color: #333333;
+  font-size: 16px;
+  /* table.font.size */
+  background-color: #FFFFFF;
+  /* table.background.color */
+  width: auto;
+  /* table.width */
+  border-top-style: solid;
+  /* table.border.top.style */
+  border-top-width: 2px;
+  /* table.border.top.width */
+  border-top-color: #A8A8A8;
+  /* table.border.top.color */
+  border-bottom-style: solid;
+  /* table.border.bottom.style */
+  border-bottom-width: 2px;
+  /* table.border.bottom.width */
+  border-bottom-color: #A8A8A8;
+  /* table.border.bottom.color */
+}
+
+#uqxgbexpoz .gt_heading {
+  background-color: #FFFFFF;
+  /* heading.background.color */
+  border-bottom-color: #FFFFFF;
+  /* table.background.color */
+  border-left-style: hidden;
+  /* heading.border.lr.style */
+  border-left-width: 1px;
+  /* heading.border.lr.width */
+  border-left-color: #D3D3D3;
+  /* heading.border.lr.color */
+  border-right-style: hidden;
+  /* heading.border.lr.style */
+  border-right-width: 1px;
+  /* heading.border.lr.width */
+  border-right-color: #D3D3D3;
+  /* heading.border.lr.color */
+}
+
+#uqxgbexpoz .gt_title {
+  color: #333333;
+  font-size: 125%;
+  /* heading.title.font.size */
+  font-weight: initial;
+  /* heading.title.font.weight */
+  padding-top: 4px;
+  /* heading.top.padding - not yet used */
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  /* table.background.color */
+  border-bottom-width: 0;
+}
+
+#uqxgbexpoz .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  /* heading.subtitle.font.size */
+  font-weight: initial;
+  /* heading.subtitle.font.weight */
+  padding-top: 0;
+  padding-bottom: 4px;
+  /* heading.bottom.padding - not yet used */
+  border-top-color: #FFFFFF;
+  /* table.background.color */
+  border-top-width: 0;
+}
+
+#uqxgbexpoz .gt_bottom_border {
+  border-bottom-style: solid;
+  /* heading.border.bottom.style */
+  border-bottom-width: 2px;
+  /* heading.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* heading.border.bottom.color */
+}
+
+#uqxgbexpoz .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#uqxgbexpoz .gt_col_headings {
+  border-top-style: solid;
+  /* column_labels.border.top.style */
+  border-top-width: 2px;
+  /* column_labels.border.top.width */
+  border-top-color: #D3D3D3;
+  /* column_labels.border.top.color */
+  border-bottom-style: solid;
+  /* column_labels.border.bottom.style */
+  border-bottom-width: 2px;
+  /* column_labels.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* column_labels.border.bottom.color */
+  border-left-style: none;
+  /* column_labels.border.lr.style */
+  border-left-width: 1px;
+  /* column_labels.border.lr.width */
+  border-left-color: #D3D3D3;
+  /* column_labels.border.lr.color */
+  border-right-style: none;
+  /* column_labels.border.lr.style */
+  border-right-width: 1px;
+  /* column_labels.border.lr.width */
+  border-right-color: #D3D3D3;
+  /* column_labels.border.lr.color */
+}
+
+#uqxgbexpoz .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* column_labels.background.color */
+  font-size: 100%;
+  /* column_labels.font.size */
+  font-weight: normal;
+  /* column_labels.font.weight */
+  text-transform: inherit;
+  /* column_labels.text_transform */
+  vertical-align: middle;
+  padding: 5px;
+  margin: 10px;
+  overflow-x: hidden;
+}
+
+#uqxgbexpoz .gt_sep_right {
+  border-right: 5px solid #FFFFFF;
+}
+
+#uqxgbexpoz .gt_group_heading {
+  padding: 8px;
+  /* row_group.padding */
+  color: #333333;
+  background-color: #FFFFFF;
+  /* row_group.background.color */
+  font-size: 100%;
+  /* row_group.font.size */
+  font-weight: initial;
+  /* row_group.font.weight */
+  text-transform: inherit;
+  /* row_group.text_transform */
+  border-top-style: solid;
+  /* row_group.border.top.style */
+  border-top-width: 2px;
+  /* row_group.border.top.width */
+  border-top-color: #D3D3D3;
+  /* row_group.border.top.color */
+  border-bottom-style: solid;
+  /* row_group.border.bottom.style */
+  border-bottom-width: 2px;
+  /* row_group.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* row_group.border.bottom.color */
+  border-left-style: none;
+  /* row_group.border.left.style */
+  border-left-width: 1px;
+  /* row_group.border.left.width */
+  border-left-color: #D3D3D3;
+  /* row_group.border.left.color */
+  border-right-style: none;
+  /* row_group.border.right.style */
+  border-right-width: 1px;
+  /* row_group.border.right.width */
+  border-right-color: #D3D3D3;
+  /* row_group.border.right.color */
+  vertical-align: middle;
+}
+
+#uqxgbexpoz .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  /* row_group.background.color */
+  font-size: 100%;
+  /* row_group.font.size */
+  font-weight: initial;
+  /* row_group.font.weight */
+  border-top-style: solid;
+  /* row_group.border.top.style */
+  border-top-width: 2px;
+  /* row_group.border.top.width */
+  border-top-color: #D3D3D3;
+  /* row_group.border.top.color */
+  border-bottom-style: solid;
+  /* row_group.border.bottom.style */
+  border-bottom-width: 2px;
+  /* row_group.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* row_group.border.bottom.color */
+  vertical-align: middle;
+}
+
+#uqxgbexpoz .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+  /* row.striping.background_color */
+}
+
+#uqxgbexpoz .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#uqxgbexpoz .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#uqxgbexpoz .gt_row {
+  padding-top: 8px;
+  /* data_row.padding */
+  padding-bottom: 8px;
+  /* data_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  /* table_body.hlines.style */
+  border-top-width: 1px;
+  /* table_body.hlines.width */
+  border-top-color: #D3D3D3;
+  /* table_body.hlines.color */
+  border-left-style: none;
+  /* table_body.vlines.style */
+  border-left-width: 1px;
+  /* table_body.vlines.width */
+  border-left-color: #D3D3D3;
+  /* table_body.vlines.color */
+  border-right-style: none;
+  /* table_body.vlines.style */
+  border-right-width: 1px;
+  /* table_body.vlines.width */
+  border-right-color: #D3D3D3;
+  /* table_body.vlines.color */
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#uqxgbexpoz .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* stub.background.color */
+  font-weight: initial;
+  /* stub.font.weight */
+  text-transform: inherit;
+  /* stub.text_transform */
+  border-right-style: solid;
+  /* stub.border.style */
+  border-right-width: 2px;
+  /* stub.border.width */
+  border-right-color: #D3D3D3;
+  /* stub.border.color */
+  padding-left: 12px;
+}
+
+#uqxgbexpoz .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* summary_row.background.color */
+  text-transform: inherit;
+  /* summary_row.text_transform */
+  padding-top: 8px;
+  /* summary_row.padding */
+  padding-bottom: 8px;
+  /* summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#uqxgbexpoz .gt_first_summary_row {
+  padding-top: 8px;
+  /* summary_row.padding */
+  padding-bottom: 8px;
+  /* summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  /* summary_row.border.style */
+  border-top-width: 2px;
+  /* summary_row.border.width */
+  border-top-color: #D3D3D3;
+  /* summary_row.border.color */
+}
+
+#uqxgbexpoz .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* grand_summary_row.background.color */
+  text-transform: inherit;
+  /* grand_summary_row.text_transform */
+  padding-top: 8px;
+  /* grand_summary_row.padding */
+  padding-bottom: 8px;
+  /* grand_summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#uqxgbexpoz .gt_first_grand_summary_row {
+  padding-top: 8px;
+  /* grand_summary_row.padding */
+  padding-bottom: 8px;
+  /* grand_summary_row.padding */
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  /* grand_summary_row.border.style */
+  border-top-width: 6px;
+  /* grand_summary_row.border.width */
+  border-top-color: #D3D3D3;
+  /* grand_summary_row.border.color */
+}
+
+#uqxgbexpoz .gt_table_body {
+  border-top-style: solid;
+  /* table_body.border.top.style */
+  border-top-width: 2px;
+  /* table_body.border.top.width */
+  border-top-color: #D3D3D3;
+  /* table_body.border.top.color */
+  border-bottom-style: solid;
+  /* table_body.border.bottom.style */
+  border-bottom-width: 2px;
+  /* table_body.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* table_body.border.bottom.color */
+}
+
+#uqxgbexpoz .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* footnotes.background.color */
+  border-bottom-style: none;
+  /* footnotes.border.bottom.style */
+  border-bottom-width: 2px;
+  /* footnotes.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* footnotes.border.bottom.color */
+  border-left-style: none;
+  /* footnotes.border.lr.color */
+  border-left-width: 2px;
+  /* footnotes.border.lr.color */
+  border-left-color: #D3D3D3;
+  /* footnotes.border.lr.color */
+  border-right-style: none;
+  /* footnotes.border.lr.color */
+  border-right-width: 2px;
+  /* footnotes.border.lr.color */
+  border-right-color: #D3D3D3;
+  /* footnotes.border.lr.color */
+}
+
+#uqxgbexpoz .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  /* footnotes.font.size */
+  padding: 4px;
+  /* footnotes.padding */
+}
+
+#uqxgbexpoz .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  /* source_notes.background.color */
+  border-bottom-style: none;
+  /* source_notes.border.bottom.style */
+  border-bottom-width: 2px;
+  /* source_notes.border.bottom.width */
+  border-bottom-color: #D3D3D3;
+  /* source_notes.border.bottom.color */
+  border-left-style: none;
+  /* source_notes.border.lr.style */
+  border-left-width: 2px;
+  /* source_notes.border.lr.style */
+  border-left-color: #D3D3D3;
+  /* source_notes.border.lr.style */
+  border-right-style: none;
+  /* source_notes.border.lr.style */
+  border-right-width: 2px;
+  /* source_notes.border.lr.style */
+  border-right-color: #D3D3D3;
+  /* source_notes.border.lr.style */
+}
+
+#uqxgbexpoz .gt_sourcenote {
+  font-size: 90%;
+  /* source_notes.font.size */
+  padding: 4px;
+  /* source_notes.padding */
+}
+
+#uqxgbexpoz .gt_left {
+  text-align: left;
+}
+
+#uqxgbexpoz .gt_center {
+  text-align: center;
+}
+
+#uqxgbexpoz .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#uqxgbexpoz .gt_font_normal {
+  font-weight: normal;
+}
+
+#uqxgbexpoz .gt_font_bold {
+  font-weight: bold;
+}
+
+#uqxgbexpoz .gt_font_italic {
+  font-style: italic;
+}
+
+#uqxgbexpoz .gt_super {
+  font-size: 65%;
+}
+
+#uqxgbexpoz .gt_footnote_marks {
+  font-style: italic;
+  font-size: 65%;
+}
+</style>
+<div id="uqxgbexpoz" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;"><table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">State</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Age</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Total Population</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Total Citizen Population</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Total Registered</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Total Registered (Percent)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Margin of Error (MOE)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Percent Registered (Citizen)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">MOE</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Total Voted</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Total Voted (Percent)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">MOE_3</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">Percent Voted (Citizen)</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">MOE_4</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr>
+      <td class="gt_row gt_left">STATE</td>
+      <td class="gt_row gt_left">Age</td>
+      <td class="gt_row gt_left">Total Population</td>
+      <td class="gt_row gt_left">Total Citizen Population</td>
+      <td class="gt_row gt_left">Registered</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">Voted</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">NA</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">NA</td>
+      <td class="gt_row gt_left gt_striped">NA</td>
+      <td class="gt_row gt_left gt_striped">NA</td>
+      <td class="gt_row gt_left gt_striped">NA</td>
+      <td class="gt_row gt_left gt_striped">Total registered</td>
+      <td class="gt_row gt_left gt_striped">Percent registered
+(Total)</td>
+      <td class="gt_row gt_left gt_striped">Margin of Error 1</td>
+      <td class="gt_row gt_left gt_striped">Percent registered
+(Citizen)</td>
+      <td class="gt_row gt_left gt_striped">Margin of Error 1</td>
+      <td class="gt_row gt_left gt_striped">Total voted</td>
+      <td class="gt_row gt_left gt_striped">Percent voted
+(Total)</td>
+      <td class="gt_row gt_left gt_striped">Margin of Error 1</td>
+      <td class="gt_row gt_left gt_striped">Percent voted
+(Citizen)</td>
+      <td class="gt_row gt_left gt_striped">Margin of Error 1</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">US</td>
+      <td class="gt_row gt_left">Total</td>
+      <td class="gt_row gt_left">245502</td>
+      <td class="gt_row gt_left">224059</td>
+      <td class="gt_row gt_left">157596</td>
+      <td class="gt_row gt_left">64.2</td>
+      <td class="gt_row gt_left">0.3</td>
+      <td class="gt_row gt_left">70.3</td>
+      <td class="gt_row gt_left">0.3</td>
+      <td class="gt_row gt_left">137537</td>
+      <td class="gt_row gt_left">56</td>
+      <td class="gt_row gt_left">0.3</td>
+      <td class="gt_row gt_left">61.4</td>
+      <td class="gt_row gt_left">0.3</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">NA</td>
+      <td class="gt_row gt_left gt_striped">18 to 24</td>
+      <td class="gt_row gt_left gt_striped">29320</td>
+      <td class="gt_row gt_left gt_striped">26913</td>
+      <td class="gt_row gt_left gt_striped">14905</td>
+      <td class="gt_row gt_left gt_striped">50.8</td>
+      <td class="gt_row gt_left gt_striped">0.9</td>
+      <td class="gt_row gt_left gt_striped">55.4</td>
+      <td class="gt_row gt_left gt_striped">0.9</td>
+      <td class="gt_row gt_left gt_striped">11560</td>
+      <td class="gt_row gt_left gt_striped">39.4</td>
+      <td class="gt_row gt_left gt_striped">0.9</td>
+      <td class="gt_row gt_left gt_striped">43</td>
+      <td class="gt_row gt_left gt_striped">0.9</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">25 to 34</td>
+      <td class="gt_row gt_left">43794</td>
+      <td class="gt_row gt_left">38283</td>
+      <td class="gt_row gt_left">24682</td>
+      <td class="gt_row gt_left">56.4</td>
+      <td class="gt_row gt_left">0.7</td>
+      <td class="gt_row gt_left">64.5</td>
+      <td class="gt_row gt_left">0.8</td>
+      <td class="gt_row gt_left">20332</td>
+      <td class="gt_row gt_left">46.4</td>
+      <td class="gt_row gt_left">0.7</td>
+      <td class="gt_row gt_left">53.1</td>
+      <td class="gt_row gt_left">0.8</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">NA</td>
+      <td class="gt_row gt_left gt_striped">35 to 44</td>
+      <td class="gt_row gt_left gt_striped">39905</td>
+      <td class="gt_row gt_left gt_striped">34327</td>
+      <td class="gt_row gt_left gt_striped">23948</td>
+      <td class="gt_row gt_left gt_striped">60</td>
+      <td class="gt_row gt_left gt_striped">0.8</td>
+      <td class="gt_row gt_left gt_striped">69.8</td>
+      <td class="gt_row gt_left gt_striped">0.8</td>
+      <td class="gt_row gt_left gt_striped">20662</td>
+      <td class="gt_row gt_left gt_striped">51.8</td>
+      <td class="gt_row gt_left gt_striped">0.8</td>
+      <td class="gt_row gt_left gt_striped">60.2</td>
+      <td class="gt_row gt_left gt_striped">0.8</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">NA</td>
+      <td class="gt_row gt_left">45 to 64</td>
+      <td class="gt_row gt_left">83799</td>
+      <td class="gt_row gt_left">77544</td>
+      <td class="gt_row gt_left">57394</td>
+      <td class="gt_row gt_left">68.5</td>
+      <td class="gt_row gt_left">0.5</td>
+      <td class="gt_row gt_left">74</td>
+      <td class="gt_row gt_left">0.5</td>
+      <td class="gt_row gt_left">51668</td>
+      <td class="gt_row gt_left">61.7</td>
+      <td class="gt_row gt_left">0.5</td>
+      <td class="gt_row gt_left">66.599999999999994</td>
+      <td class="gt_row gt_left">0.5</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">NA</td>
+      <td class="gt_row gt_left gt_striped">65+</td>
+      <td class="gt_row gt_left gt_striped">48684</td>
+      <td class="gt_row gt_left gt_striped">46993</td>
+      <td class="gt_row gt_left gt_striped">36667</td>
+      <td class="gt_row gt_left gt_striped">75.3</td>
+      <td class="gt_row gt_left gt_striped">0.6</td>
+      <td class="gt_row gt_left gt_striped">78</td>
+      <td class="gt_row gt_left gt_striped">0.6</td>
+      <td class="gt_row gt_left gt_striped">33314</td>
+      <td class="gt_row gt_left gt_striped">68.400000000000006</td>
+      <td class="gt_row gt_left gt_striped">0.6</td>
+      <td class="gt_row gt_left gt_striped">70.900000000000006</td>
+      <td class="gt_row gt_left gt_striped">0.6</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left">ALABAMA</td>
+      <td class="gt_row gt_left">Total</td>
+      <td class="gt_row gt_left">3717</td>
+      <td class="gt_row gt_left">3651</td>
+      <td class="gt_row gt_left">2526</td>
+      <td class="gt_row gt_left">68</td>
+      <td class="gt_row gt_left">2.5</td>
+      <td class="gt_row gt_left">69.2</td>
+      <td class="gt_row gt_left">2.5</td>
+      <td class="gt_row gt_left">2095</td>
+      <td class="gt_row gt_left">56.4</td>
+      <td class="gt_row gt_left">2.7</td>
+      <td class="gt_row gt_left">57.4</td>
+      <td class="gt_row gt_left">2.7</td>
+    </tr>
+    <tr>
+      <td class="gt_row gt_left gt_striped">NA</td>
+      <td class="gt_row gt_left gt_striped">18 to 24</td>
+      <td class="gt_row gt_left gt_striped">513</td>
+      <td class="gt_row gt_left gt_striped">497</td>
+      <td class="gt_row gt_left gt_striped">283</td>
+      <td class="gt_row gt_left gt_striped">55.2</td>
+      <td class="gt_row gt_left gt_striped">7.2</td>
+      <td class="gt_row gt_left gt_striped">57</td>
+      <td class="gt_row gt_left gt_striped">7.3</td>
+      <td class="gt_row gt_left gt_striped">212</td>
+      <td class="gt_row gt_left gt_striped">41.4</td>
+      <td class="gt_row gt_left gt_striped">7.1</td>
+      <td class="gt_row gt_left gt_striped">42.7</td>
+      <td class="gt_row gt_left gt_striped">7.3</td>
+    </tr>
+  </tbody>
+  
+  
+</table></div>
+</div>
 
 
 
