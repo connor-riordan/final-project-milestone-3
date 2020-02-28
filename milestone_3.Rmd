@@ -18,7 +18,29 @@ library(janitor)
 age_by_region_voting_2016 <- read_xlsx("Raw-data/age_by_region_voting_2016.xlsx", skip = 6) %>%
   clean_names()
 
-age_by_region_voting_2016
+age_by_region_voting_2016_revised <- age_by_region_voting_2016 %>%
+  rename("Region" = x1,
+         "Region Part" = x2,
+         "Age" = x3, 
+         "Total Population" = x4,
+         "Total Citizen Population" = x5,
+         "Reported Registered (Number)" = number_6,
+         "Reported Registered (Percent)" = percent_7,
+         "Reported Not Registered (Number)" = number_8,
+         "Reported Not Registered (Percent)" = percent_9,
+         "No Response (Number)" = number_10,
+         "No Response (Percent)" = percent_11,
+         "Reported Voted (Number)" = number_12,
+         "Reported Voted (Percent)" = percent_13,
+         "Reported Not Voted (Number)" = number_14,
+         "Reported Not Voted (Percent)" = percent_15,
+         "No Response to Voting (Number)" = number_16,
+         "No Response to Voting (Percent)" = percent_17,
+         "Reported Registered" = percent_18,
+         "Reported Voted" = percent_19)
+
+
+age_by_region_voting_2016_revised
 
 ```
 
@@ -27,7 +49,27 @@ age_by_region_voting_2016
 age_characteristics_voting_2018 <- read_xlsx("Raw-data/age_characteristics_voting_2018.xlsx", skip = 2) %>%
   clean_names()
 
-age_characteristics_voting_2018
+age_characteristics_voting_2018_revised <- age_characteristics_voting_2018 %>%
+  drop_na() %>%
+  rename("Total Age 18-29 (estimate)" = age,
+         "Total Age 30-44 (estimate)" = x11,
+         "Total Age 45-64 (estimate)" = x15,
+         "Total Age 65+ (estimate)" = x19,
+         "Margin of error (MOE)" = x6, 
+         "Margin of error (MOE) 18-29" = x8, 
+         "Margin of error (MOE) 30-44" = x12, 
+         "Margin of error (MOE) 45-64" = x16, 
+         "Margin of error (MOE)65+" = x20,
+         "Percent of total 18-29" = x9, 
+         "Percent of total 30-44" = x13, 
+         "Percent of total 45-64" = x17, 
+         "Percent of total 65+" = x21,
+         "Percent of total margin of error (MOE) 18-29" = x10, 
+         "Percent of total margin of error (MOE) 30-44" = x14, 
+         "Percent of total margin of error (MOE) 45-64" = x18, 
+         "Percent of total margin of error (MOE) 65+" = x22)
+
+age_characteristics_voting_2018_revised
 
 ```
 
@@ -36,7 +78,10 @@ age_characteristics_voting_2018
 civic_education_requirements_by_state <- read_csv("Raw-data/civic_education_requirements_by_state.csv") %>%
   clean_names()
 
-civic_education_requirements_by_state
+civic_education_requirements_by_state_revised <- civic_education_requirements_by_state
+
+
+civic_education_requirements_by_state_revised
 
 ```
 

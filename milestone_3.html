@@ -378,23 +378,50 @@ summary {
 ## * `` -&gt; ...4
 ## * `` -&gt; ...5
 ## * ... and 14 more problems</code></pre>
-<pre class="r"><code>age_by_region_voting_2016</code></pre>
+<pre class="r"><code>age_by_region_voting_2016_revised &lt;- age_by_region_voting_2016 %&gt;%
+  rename(&quot;Region&quot; = x1,
+         &quot;Region Part&quot; = x2,
+         &quot;Age&quot; = x3, 
+         &quot;Total Population&quot; = x4,
+         &quot;Total Citizen Population&quot; = x5,
+         &quot;Reported Registered (Number)&quot; = number_6,
+         &quot;Reported Registered (Percent)&quot; = percent_7,
+         &quot;Reported Not Registered (Number)&quot; = number_8,
+         &quot;Reported Not Registered (Percent)&quot; = percent_9,
+         &quot;No Response (Number)&quot; = number_10,
+         &quot;No Response (Percent)&quot; = percent_11,
+         &quot;Reported Voted (Number)&quot; = number_12,
+         &quot;Reported Voted (Percent)&quot; = percent_13,
+         &quot;Reported Not Voted (Number)&quot; = number_14,
+         &quot;Reported Not Voted (Percent)&quot; = percent_15,
+         &quot;No Response to Voting (Number)&quot; = number_16,
+         &quot;No Response to Voting (Percent)&quot; = percent_17,
+         &quot;Reported Registered&quot; = percent_18,
+         &quot;Reported Voted&quot; = percent_19)
+
+
+age_by_region_voting_2016_revised</code></pre>
 <pre><code>## # A tibble: 179 x 19
-##    x1    x2    x3    x4    x5    number_6 percent_7 number_8 percent_9 number_10
-##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;    
-##  1 UNIT~ &lt;NA&gt;  &lt;NA&gt;  2455~ 2240~ 157596   70.3      32622    14.6      33841    
-##  2 NORT~ TOTAL Tota~ 43918 40059 28121    70.2      5505     13.7      6433     
-##  3 &lt;NA&gt;  &lt;NA&gt;  18 t~ 4996  4572  2598     56.8      1003     21.9      971      
-##  4 &lt;NA&gt;  &lt;NA&gt;  25 t~ 14523 12556 8363     66.59999~ 2041     16.3      2152     
-##  5 &lt;NA&gt;  &lt;NA&gt;  45 t~ 15180 14038 10448    74.40000~ 1508     10.7      2082     
-##  6 &lt;NA&gt;  &lt;NA&gt;  65 t~ 5441  5248  4055     77.3      488      9.300000~ 705      
-##  7 &lt;NA&gt;  &lt;NA&gt;  75 y~ 3778  3646  2657     72.90000~ 464      12.7      524      
-##  8 &lt;NA&gt;  NEW ~ Tota~ 11570 10755 7905     73.5      1244     11.6      1606     
-##  9 &lt;NA&gt;  &lt;NA&gt;  18 t~ 1198  1101  626      56.9      236      21.4      239      
-## 10 &lt;NA&gt;  &lt;NA&gt;  25 t~ 3814  3391  2344     69.09999~ 512      15.1      536      
-## # ... with 169 more rows, and 9 more variables: percent_11 &lt;chr&gt;,
-## #   number_12 &lt;chr&gt;, percent_13 &lt;chr&gt;, number_14 &lt;chr&gt;, percent_15 &lt;chr&gt;,
-## #   number_16 &lt;chr&gt;, percent_17 &lt;chr&gt;, percent_18 &lt;chr&gt;, percent_19 &lt;dbl&gt;</code></pre>
+##    Region `Region Part` Age   `Total Populati~ `Total Citizen ~ `Reported Regis~
+##    &lt;chr&gt;  &lt;chr&gt;         &lt;chr&gt; &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;           
+##  1 UNITE~ &lt;NA&gt;          &lt;NA&gt;  245502           224059           157596          
+##  2 NORTH~ TOTAL         Tota~ 43918            40059            28121           
+##  3 &lt;NA&gt;   &lt;NA&gt;          18 t~ 4996             4572             2598            
+##  4 &lt;NA&gt;   &lt;NA&gt;          25 t~ 14523            12556            8363            
+##  5 &lt;NA&gt;   &lt;NA&gt;          45 t~ 15180            14038            10448           
+##  6 &lt;NA&gt;   &lt;NA&gt;          65 t~ 5441             5248             4055            
+##  7 &lt;NA&gt;   &lt;NA&gt;          75 y~ 3778             3646             2657            
+##  8 &lt;NA&gt;   NEW ENGLAND   Tota~ 11570            10755            7905            
+##  9 &lt;NA&gt;   &lt;NA&gt;          18 t~ 1198             1101             626             
+## 10 &lt;NA&gt;   &lt;NA&gt;          25 t~ 3814             3391             2344            
+## # ... with 169 more rows, and 13 more variables: `Reported Registered
+## #   (Percent)` &lt;chr&gt;, `Reported Not Registered (Number)` &lt;chr&gt;, `Reported Not
+## #   Registered (Percent)` &lt;chr&gt;, `No Response (Number)` &lt;chr&gt;, `No Response
+## #   (Percent)` &lt;chr&gt;, `Reported Voted (Number)` &lt;chr&gt;, `Reported Voted
+## #   (Percent)` &lt;chr&gt;, `Reported Not Voted (Number)` &lt;chr&gt;, `Reported Not Voted
+## #   (Percent)` &lt;chr&gt;, `No Response to Voting (Number)` &lt;chr&gt;, `No Response to
+## #   Voting (Percent)` &lt;chr&gt;, `Reported Registered` &lt;chr&gt;, `Reported
+## #   Voted` &lt;dbl&gt;</code></pre>
 <pre class="r"><code>age_characteristics_voting_2018 &lt;- read_xlsx(&quot;Raw-data/age_characteristics_voting_2018.xlsx&quot;, skip = 2) %&gt;%
   clean_names()</code></pre>
 <pre><code>## New names:
@@ -404,23 +431,50 @@ summary {
 ## * `` -&gt; ...10
 ## * `` -&gt; ...11
 ## * ... and 11 more problems</code></pre>
-<pre class="r"><code>age_characteristics_voting_2018</code></pre>
-<pre><code>## # A tibble: 444 x 22
+<pre class="r"><code>age_characteristics_voting_2018_revised &lt;- age_characteristics_voting_2018 %&gt;%
+  drop_na() %&gt;%
+  rename(&quot;Total Age 18-29 (estimate)&quot; = age,
+         &quot;Total Age 30-44 (estimate)&quot; = x11,
+         &quot;Total Age 45-64 (estimate)&quot; = x15,
+         &quot;Total Age 65+ (estimate)&quot; = x19,
+         &quot;Margin of error (MOE)&quot; = x6, 
+         &quot;Margin of error (MOE) 18-29&quot; = x8, 
+         &quot;Margin of error (MOE) 30-44&quot; = x12, 
+         &quot;Margin of error (MOE) 45-64&quot; = x16, 
+         &quot;Margin of error (MOE)65+&quot; = x20,
+         &quot;Percent of total 18-29&quot; = x9, 
+         &quot;Percent of total 30-44&quot; = x13, 
+         &quot;Percent of total 45-64&quot; = x17, 
+         &quot;Percent of total 65+&quot; = x21,
+         &quot;Percent of total margin of error (MOE) 18-29&quot; = x10, 
+         &quot;Percent of total margin of error (MOE) 30-44&quot; = x14, 
+         &quot;Percent of total margin of error (MOE) 45-64&quot; = x18, 
+         &quot;Percent of total margin of error (MOE) 65+&quot; = x22)
+
+age_characteristics_voting_2018_revised</code></pre>
+<pre><code>## # A tibble: 436 x 22
 ##    line_number state_abbreviat~ state_name congressional_d~ citizen_voting_~
 ##    &lt;chr&gt;       &lt;chr&gt;            &lt;chr&gt;      &lt;chr&gt;            &lt;chr&gt;           
-##  1 &lt;NA&gt;        &lt;NA&gt;             &lt;NA&gt;       &lt;NA&gt;             &lt;NA&gt;            
-##  2 &lt;NA&gt;        &lt;NA&gt;             &lt;NA&gt;       &lt;NA&gt;             Estimate        
-##  3 1           AL               Alabama    1                544464          
-##  4 2           AL               Alabama    2                516295          
-##  5 3           AL               Alabama    3                543854          
-##  6 4           AL               Alabama    4                515701          
-##  7 5           AL               Alabama    5                551968          
-##  8 6           AL               Alabama    6                535753          
-##  9 7           AL               Alabama    7                504177          
-## 10 8           AK               Alaska     At-large         532244          
-## # ... with 434 more rows, and 17 more variables: x6 &lt;chr&gt;, age &lt;chr&gt;, x8 &lt;chr&gt;,
-## #   x9 &lt;chr&gt;, x10 &lt;chr&gt;, x11 &lt;chr&gt;, x12 &lt;chr&gt;, x13 &lt;chr&gt;, x14 &lt;chr&gt;, x15 &lt;chr&gt;,
-## #   x16 &lt;chr&gt;, x17 &lt;chr&gt;, x18 &lt;chr&gt;, x19 &lt;chr&gt;, x20 &lt;chr&gt;, x21 &lt;chr&gt;, x22 &lt;chr&gt;</code></pre>
+##  1 1           AL               Alabama    1                544464          
+##  2 2           AL               Alabama    2                516295          
+##  3 3           AL               Alabama    3                543854          
+##  4 4           AL               Alabama    4                515701          
+##  5 5           AL               Alabama    5                551968          
+##  6 6           AL               Alabama    6                535753          
+##  7 7           AL               Alabama    7                504177          
+##  8 8           AK               Alaska     At-large         532244          
+##  9 9           AZ               Arizona    1                568661          
+## 10 10          AZ               Arizona    2                550044          
+## # ... with 426 more rows, and 17 more variables: `Margin of error (MOE)` &lt;chr&gt;,
+## #   `Total Age 18-29 (estimate)` &lt;chr&gt;, `Margin of error (MOE) 18-29` &lt;chr&gt;,
+## #   `Percent of total 18-29` &lt;chr&gt;, `Percent of total margin of error (MOE)
+## #   18-29` &lt;chr&gt;, `Total Age 30-44 (estimate)` &lt;chr&gt;, `Margin of error (MOE)
+## #   30-44` &lt;chr&gt;, `Percent of total 30-44` &lt;chr&gt;, `Percent of total margin of
+## #   error (MOE) 30-44` &lt;chr&gt;, `Total Age 45-64 (estimate)` &lt;chr&gt;, `Margin of
+## #   error (MOE) 45-64` &lt;chr&gt;, `Percent of total 45-64` &lt;chr&gt;, `Percent of total
+## #   margin of error (MOE) 45-64` &lt;chr&gt;, `Total Age 65+ (estimate)` &lt;chr&gt;,
+## #   `Margin of error (MOE)65+` &lt;chr&gt;, `Percent of total 65+` &lt;chr&gt;, `Percent of
+## #   total margin of error (MOE) 65+` &lt;chr&gt;</code></pre>
 <pre class="r"><code>civic_education_requirements_by_state &lt;- read_csv(&quot;Raw-data/civic_education_requirements_by_state.csv&quot;) %&gt;%
   clean_names()</code></pre>
 <pre><code>## Warning: Duplicated column names deduplicated: &#39;Course Span (years)&#39; =&gt; &#39;Course
@@ -436,7 +490,10 @@ summary {
 ##   `Requires U.S. History exam to graduate` = col_character(),
 ##   Notes = col_character()
 ## )</code></pre>
-<pre class="r"><code>civic_education_requirements_by_state</code></pre>
+<pre class="r"><code>civic_education_requirements_by_state_revised &lt;- civic_education_requirements_by_state
+
+
+civic_education_requirements_by_state_revised</code></pre>
 <pre><code>## # A tibble: 51 x 8
 ##    state requires_civics~ course_span_yea~ requires_civics~ requires_u_s_hi~
 ##    &lt;chr&gt; &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;           
