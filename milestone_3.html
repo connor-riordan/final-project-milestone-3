@@ -369,6 +369,10 @@ summary {
 </div>
 
 
+<p>Introduction: The ability of United States citizens to participate in thier democracy is a fundamental right guaranteed by the Constitution. We are very fortunate to live under a democratic government and have the ability to directly participate in the democratic process, and it is easy to assume that U.S. citizens would want to know about and participate in their government. It is surprising, then, that a 2019 story from the Annenberg Public Policy Center found that only roughly 1 in 3 Americans could name all three branches of the U.S. government, and 1 in 5 can’t name a single one. It is also consistently disheartening to see the extremely low percentage of eligible voters that show up to the polls to essentially decide the fate of those who do not vote themselves.</p>
+<p>Purpose of this Project: I believe that civic education is instrumental in helping students become more likely to participate in the democratic process. This project will examine data from a multitude of sources to compare the civic education requirements of the states and their voting patterns, as well as the amount of funding each state allocates towards civic education. I believe these factors will shed some light onto the current state of civic education and possibly provide us a path forward to make sure future generations will be well prepared to tackle the problems of tomorrow.</p>
+<p>Data Sets: Many of the data sets I have used thus far are from the United States Census Bureau, which has an enormous amount of statistics relating to voting in the 2016 and 2018 elections, as well as those prior. I have a few in this project so far, but if I find that I want to examine more years, I will be sure to retrieve more data sets. The data set not fromm the Census Bureau, the civic_education_requirements_by_state, came from Education Week, and contains great data on the civic education requirements of separate states. I have already tried to do some cleaning with the data, and I will not focus on cutting any unnecessary rows, changing Y and N to 1 and 0, respectively, in the civic_education_requirements_by_state dataset.I also want t ofind a way to eliminate the NAs from these tables, either by combining certain columns or finding another way to represent the table using gt() or a different function. I also want to add that I am still searching for some data on civic education curriculum/funding that would be a huge help with my project.</p>
+<p>Sources() Edweek: <a href="https://www.edweek.org/ew/section/multimedia/data-most-states-require-history-but-not.html" class="uri">https://www.edweek.org/ew/section/multimedia/data-most-states-require-history-but-not.html</a> United States Census bureau: <a href="https://www.census.gov/programs-surveys/acs/technical-documentation/code-lists.html" class="uri">https://www.census.gov/programs-surveys/acs/technical-documentation/code-lists.html</a></p>
 <pre class="r"><code>age_by_region_voting_2016 &lt;- read_xlsx(&quot;Raw-data/age_by_region_voting_2016.xlsx&quot;, skip = 6) %&gt;%
   clean_names()</code></pre>
 <pre><code>## New names:
@@ -490,11 +494,11 @@ age_characteristics_voting_2018_revised</code></pre>
 ##   `Requires U.S. History exam to graduate` = col_character(),
 ##   Notes = col_character()
 ## )</code></pre>
-<pre class="r"><code>civic_education_requirements_by_state_revised &lt;- civic_education_requirements_by_state
-
+<pre class="r"><code>civic_education_requirements_by_state_revised &lt;- civic_education_requirements_by_state %&gt;%
+  select(-&quot;notes&quot;)
 
 civic_education_requirements_by_state_revised</code></pre>
-<pre><code>## # A tibble: 51 x 8
+<pre><code>## # A tibble: 51 x 7
 ##    state requires_civics~ course_span_yea~ requires_civics~ requires_u_s_hi~
 ##    &lt;chr&gt; &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;           
 ##  1 Alab~ Y                0.5              Y                Y               
@@ -507,30 +511,83 @@ civic_education_requirements_by_state_revised</code></pre>
 ##  8 Dela~ N                &lt;NA&gt;             N                Y               
 ##  9 Dist~ Y                0.5              N                Y               
 ## 10 Flor~ Y                0.5              Y                Y               
-## # ... with 41 more rows, and 3 more variables: course_span_years_1 &lt;chr&gt;,
-## #   requires_u_s_history_exam_to_graduate &lt;chr&gt;, notes &lt;chr&gt;</code></pre>
+## # ... with 41 more rows, and 2 more variables: course_span_years_1 &lt;chr&gt;,
+## #   requires_u_s_history_exam_to_graduate &lt;chr&gt;</code></pre>
 <pre class="r"><code>votes_cast_voting_age_2018 &lt;- read_xlsx(&quot;Raw-data/votes_cast_voting_age_2018.xlsx&quot;, skip = 2) %&gt;%
   clean_names()</code></pre>
 <pre><code>## New names:
 ## * `` -&gt; ...7
 ## * `` -&gt; ...9</code></pre>
-<pre class="r"><code>votes_cast_voting_age_2018</code></pre>
-<pre><code>## # A tibble: 448 x 9
-##    line_number state_abbreviat~ state_name congressional_d~ votes_cast_for_~
-##    &lt;chr&gt;       &lt;chr&gt;            &lt;chr&gt;      &lt;chr&gt;                       &lt;dbl&gt;
-##  1 &lt;NA&gt;        &lt;NA&gt;             &lt;NA&gt;       &lt;NA&gt;                           NA
-##  2 1           AL               Alabama    1                          242617
-##  3 2           AL               Alabama    2                          226230
-##  4 3           AL               Alabama    3                          231915
-##  5 4           AL               Alabama    4                          230969
-##  6 5           AL               Alabama    5                          260673
-##  7 6           AL               Alabama    6                          278328
-##  8 7           AL               Alabama    7                          189163
-##  9 8           AK               Alaska     At-large                   282166
-## 10 9           AZ               Arizona    1                          266089
-## # ... with 438 more rows, and 4 more variables:
-## #   citizen_voting_age_population2 &lt;chr&gt;, x7 &lt;chr&gt;, voting_rate3 &lt;chr&gt;,
-## #   x9 &lt;chr&gt;</code></pre>
+<pre class="r"><code>votes_cast_voting_age_2018_revised &lt;- votes_cast_voting_age_2018 %&gt;%
+  select(-line_number) %&gt;%
+  drop_na() %&gt;%
+  rename(&quot;Votes Cast&quot; = votes_cast_for_congressional_representative_for_the_november_6_2018_election1, 
+         &quot;Number of Eligible Citizens (Estimate)&quot; = citizen_voting_age_population2,
+         &quot;Margin of Error (MOE)&quot; = x7,
+         &quot;Voting Rate&quot; = voting_rate3,
+         &quot;MOE&quot; = x9
+         )
+
+votes_cast_voting_age_2018_revised</code></pre>
+<pre><code>## # A tibble: 436 x 8
+##    state_abbreviat~ state_name congressional_d~ `Votes Cast` `Number of Elig~
+##    &lt;chr&gt;            &lt;chr&gt;      &lt;chr&gt;                   &lt;dbl&gt; &lt;chr&gt;           
+##  1 AL               Alabama    1                      242617 544464          
+##  2 AL               Alabama    2                      226230 516295          
+##  3 AL               Alabama    3                      231915 543854          
+##  4 AL               Alabama    4                      230969 515701          
+##  5 AL               Alabama    5                      260673 551968          
+##  6 AL               Alabama    6                      278328 535753          
+##  7 AL               Alabama    7                      189163 504177          
+##  8 AK               Alaska     At-large               282166 532244          
+##  9 AZ               Arizona    1                      266089 568661          
+## 10 AZ               Arizona    2                      294152 550044          
+## # ... with 426 more rows, and 3 more variables: `Margin of Error (MOE)` &lt;chr&gt;,
+## #   `Voting Rate` &lt;chr&gt;, MOE &lt;chr&gt;</code></pre>
+<pre class="r"><code>recorded_voting_by_age_2016 &lt;- read_xlsx(&quot;Raw-data/recorded_voting_by_age_2016.xlsx&quot;, skip = 2) %&gt;%
+  clean_names()</code></pre>
+<pre><code>## New names:
+## * `` -&gt; ...2
+## * `` -&gt; ...3
+## * `` -&gt; ...4
+## * `` -&gt; ...5
+## * `` -&gt; ...6
+## * ... and 8 more problems</code></pre>
+<pre class="r"><code>recorded_voting_by_age_2016_revised &lt;- recorded_voting_by_age_2016 %&gt;%
+  rename(&quot;State&quot; = in_thousands,
+         &quot;Age&quot; = x2,
+         &quot;Total Population&quot; = x3,
+         &quot;Total Citizen Population&quot; = x4,
+         &quot;Total Registered&quot; = x5,
+         &quot;Total Registered (Percent)&quot; = x6,
+         &quot;Margin of Error (MOE)&quot; = x7,
+         &quot;Percent Registered (Citizen)&quot; = x8,
+         &quot;MOE&quot; = x9,
+         &quot;Total Voted&quot; = x10,
+         &quot;Total Voted (Percent)&quot; = x11,
+         &quot;MOE_3&quot; = x12,
+         &quot;Percent Voted (Citizen)&quot; = x13,
+         &quot;MOE_4&quot; = x14)
+
+
+recorded_voting_by_age_2016_revised</code></pre>
+<pre><code>## # A tibble: 319 x 14
+##    State Age   `Total Populati~ `Total Citizen ~ `Total Register~
+##    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;            &lt;chr&gt;            &lt;chr&gt;           
+##  1 STATE Age   Total Population Total Citizen P~ Registered      
+##  2 &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;             &lt;NA&gt;             Total registered
+##  3 US    Total 245502           224059           157596          
+##  4 &lt;NA&gt;  18 t~ 29320            26913            14905           
+##  5 &lt;NA&gt;  25 t~ 43794            38283            24682           
+##  6 &lt;NA&gt;  35 t~ 39905            34327            23948           
+##  7 &lt;NA&gt;  45 t~ 83799            77544            57394           
+##  8 &lt;NA&gt;  65+   48684            46993            36667           
+##  9 ALAB~ Total 3717             3651             2526            
+## 10 &lt;NA&gt;  18 t~ 513              497              283             
+## # ... with 309 more rows, and 9 more variables: `Total Registered
+## #   (Percent)` &lt;chr&gt;, `Margin of Error (MOE)` &lt;chr&gt;, `Percent Registered
+## #   (Citizen)` &lt;chr&gt;, MOE &lt;chr&gt;, `Total Voted` &lt;chr&gt;, `Total Voted
+## #   (Percent)` &lt;chr&gt;, MOE_3 &lt;chr&gt;, `Percent Voted (Citizen)` &lt;chr&gt;, MOE_4 &lt;chr&gt;</code></pre>
 
 
 

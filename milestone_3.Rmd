@@ -14,7 +14,21 @@ library(janitor)
 
 ```
 
-```{r}
+
+Introduction: 
+The ability of United States citizens to participate in thier democracy is a fundamental right guaranteed by the Constitution. We are very fortunate to live under a democratic government and have the ability to directly participate in the democratic process, and it is easy to assume that U.S. citizens would want to know about and participate in their government. It is surprising, then, that a 2019 story from the Annenberg Public Policy Center found that only roughly 1 in 3 Americans could name all three branches of the U.S. government, and 1 in 5 can't name a single one. It is also consistently disheartening to see the extremely low percentage of eligible voters that show up to the polls to essentially decide the fate of those who do not vote themselves.
+
+Purpose of this Project: 
+I believe that civic education is instrumental in helping students become more likely to participate in the democratic process. This project will examine data from a multitude of sources to compare the civic education requirements of the states and their voting patterns, as well as the amount of funding each state allocates towards civic education. I believe these factors will shed some light onto the current state of civic education and possibly provide us a path forward to make sure future generations will be well prepared to tackle the problems of tomorrow.
+
+Data Sets: 
+Many of the data sets I have used thus far are from the United States Census Bureau, which has an enormous amount of statistics relating to voting in the 2016 and 2018 elections, as well as those prior. I have a few in this project so far, but if I find that I want to examine more years, I will be sure to retrieve more data sets. The data set not fromm the Census Bureau, the civic_education_requirements_by_state, came from Education Week, and contains great data on the civic education requirements of separate states. I have already tried to do some cleaning with the data, and I will not focus on cutting any unnecessary rows, changing Y and N to 1 and 0, respectively, in the civic_education_requirements_by_state dataset.I also want t ofind a way to eliminate the NAs from these tables, either by combining certain columns or finding another way to represent the table using gt() or a different function. I also want to add that I am still searching for some data on civic education curriculum/funding that would be a huge help with my project.
+
+Sources()
+Edweek: https://www.edweek.org/ew/section/multimedia/data-most-states-require-history-but-not.html
+United States Census bureau: https://www.census.gov/programs-surveys/acs/technical-documentation/code-lists.html
+
+```{r, age_by_region_voting_2016}
 age_by_region_voting_2016 <- read_xlsx("Raw-data/age_by_region_voting_2016.xlsx", skip = 6) %>%
   clean_names()
 
@@ -45,7 +59,7 @@ age_by_region_voting_2016_revised
 ```
 
 
-```{r}
+```{r, age_characteristics_voting_2018}
 age_characteristics_voting_2018 <- read_xlsx("Raw-data/age_characteristics_voting_2018.xlsx", skip = 2) %>%
   clean_names()
 
@@ -74,24 +88,63 @@ age_characteristics_voting_2018_revised
 ```
 
 
-```{r}
+```{r, civic_education_requirements_by_state}
 civic_education_requirements_by_state <- read_csv("Raw-data/civic_education_requirements_by_state.csv") %>%
   clean_names()
 
-civic_education_requirements_by_state_revised <- civic_education_requirements_by_state
-
+civic_education_requirements_by_state_revised <- civic_education_requirements_by_state %>%
+  select(-"notes")
 
 civic_education_requirements_by_state_revised
 
 ```
 
 
-```{r}
+```{r, votes_cast_voting_age_2018}
 votes_cast_voting_age_2018 <- read_xlsx("Raw-data/votes_cast_voting_age_2018.xlsx", skip = 2) %>%
   clean_names()
 
-votes_cast_voting_age_2018
+votes_cast_voting_age_2018_revised <- votes_cast_voting_age_2018 %>%
+  select(-line_number) %>%
+  drop_na() %>%
+  rename("Votes Cast" = votes_cast_for_congressional_representative_for_the_november_6_2018_election1, 
+         "Number of Eligible Citizens (Estimate)" = citizen_voting_age_population2,
+         "Margin of Error (MOE)" = x7,
+         "Voting Rate" = voting_rate3,
+         "MOE" = x9
+         )
+
+votes_cast_voting_age_2018_revised
 
 ```
+
+
+```{r, recorded_voting_by_age_2016}
+recorded_voting_by_age_2016 <- read_xlsx("Raw-data/recorded_voting_by_age_2016.xlsx", skip = 2) %>%
+  clean_names()
+
+recorded_voting_by_age_2016_revised <- recorded_voting_by_age_2016 %>%
+  rename("State" = in_thousands,
+         "Age" = x2,
+         "Total Population" = x3,
+         "Total Citizen Population" = x4,
+         "Total Registered" = x5,
+         "Total Registered (Percent)" = x6,
+         "Margin of Error (MOE)" = x7,
+         "Percent Registered (Citizen)" = x8,
+         "MOE" = x9,
+         "Total Voted" = x10,
+         "Total Voted (Percent)" = x11,
+         "MOE_3" = x12,
+         "Percent Voted (Citizen)" = x13,
+         "MOE_4" = x14)
+
+
+recorded_voting_by_age_2016_revised
+
+```
+
+
+
 
 
