@@ -1,0 +1,28 @@
+---
+title: "about"
+author: "Connor Riordan"
+date: "2/28/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Introduction 
+
+The ability of United States citizens to participate in thier democracy is a fundamental right guaranteed by the Constitution. We are very fortunate to live under a democratic government and have the ability to directly participate in the democratic process, and it is easy to assume that U.S. citizens would want to know about and participate in their government. It is surprising, then, that a 2019 story from the Annenberg Public Policy Center found that only roughly 1 in 3 Americans could name all three branches of the U.S. government, and 1 in 5 can't name a single one. It is also consistently disheartening to see the extremely low percentage of eligible voters that show up to the polls to essentially decide the fate of those who do not vote themselves.
+
+### Purpose
+
+I believe that civic education is instrumental in helping students become more likely to participate in the democratic process. This project will examine data from a multitude of sources to compare the civic education requirements of the states and their voting patterns, as well as the amount of funding each state allocates towards civic education. I believe these factors will shed some light onto the current state of civic education and possibly provide us a path forward to make sure future generations will be well prepared to tackle the problems of tomorrow.
+
+### Data Sets/Future Steps
+Many of the data sets I have used thus far are from the United States Census Bureau, which has an enormous amount of statistics relating to voting in the 2016 and 2018 elections, as well as those prior. I have a few in this project so far, but if I find that I want to examine more years, I will be sure to retrieve more data sets. The data set not fromm the Census Bureau, the civic_education_requirements_by_state, came from Education Week, and contains great data on the civic education requirements of separate states. I have already tried to do some cleaning with the data, and I will not focus on cutting any unnecessary rows, changing Y and N to 1 and 0, respectively, in the civic_education_requirements_by_state dataset.I also want t ofind a way to eliminate the NAs from these tables, either by combining certain columns or finding another way to represent the table using gt() or a different function. I also want to add that I am still searching for some data specifically detailing civic education curriculum/funding by congressional district, which would be a huge help with my project. I may also add more datasets from other election years in addition to the years 2018 and 2016, so that I can identify a wider trend throughout the years. I have reached out to the library to try to find some of this data, and I plan to follow up with them in the next couple of days.
+
+### Sources
+Edweek: https://www.edweek.org/ew/section/multimedia/data-most-states-require-history-but-not.html
+United States Census bureau: https://www.census.gov/programs-surveys/acs/technical-documentation/code-lists.html
+
+### Link to repo
+https://github.com/connor-riordan/final-project-milestone-3.git
