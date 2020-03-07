@@ -1,0 +1,25 @@
+---
+title: "Milestone 4 Notes"
+author: "Connor Riordan"
+date: "3/6/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Voting Age by Region 2016
+The work I did on this aspect of my project was to save all of the data from the Northeast under northeast_total and put it into a plot, where x = age and y = total population. My plan going forward with this aspect of my project is to make a separate plot for each region and sub-region of America and come up with a similar plot for each other variable to be plotted by age. After that, I want to make a shiny app for this plot where I can give peeople the option to switch between different y variables and have the different graphs appear accordingly. I also would love to find a way to compare two or even more regions using a common variable in the same plot, which I have not yet found out how to do but am excited to learn about.
+
+## Age Characteristics of Voters 2018
+For this data, I worked on taking the data and placing it into a ggplot. I know that it does not look like a lot of work since the last milestone, but I had an enormous problem trying to merge the columns line_number and state_name. Since these columns are not combined, it looks at each individual congressional district for a state as the same state, meaning the numbers stack on top of one another and are distorted. Unfortunately, I discovered that the only way I know how to combine columns is through the gt() function - unfortunately, you can't put a gt() function into a ggplot. My evening was spent trying a multitude of different tactics to solve this problem, to no avail. That's why I have relatively little to show for this aspect of my project. Going forward, I seek to find a way to put a gt() table into a ggplot or to find a way to combine or rename columns so that each individual congressional district is distinct from the others and the data is not distorted.
+
+## Civic Education Requirements by State
+I felt that for this problem, the best way to represent the data was to keep it in a gt() table. However, just in case I thought it would be useful, I decided to create a ggplot() for the data anyway. What I discovered is that I need to clean this data more if I want to be able to put it in graph form. Specifically, I need to find out how to make NA it's own separate entity or to represent it in some other way. What I plan to do with this data is to either combine it with other kinds of data in a plot (perhaps using specific variables from it as the fill) or to still combine it with other data and create a large gt() table for all the data.
+
+## Votes Cast by Voting Age 2018
+Much like the Age Characteristics of Voters 2018, I was only able to put this data into a ggplot because I ran into the same problem as that other set of data. I need to find a way to combine the columns that specify congressional district and state so that each individual entity is distinct from one another. I hope to also put this into a shiny app so that people can play with the specific variables and see how each age group differs between states and congressional districts.
+
+## Recorded Voting by Age 2016
+Like with the Voting Age by Region 2016 dataset, I saved the US data under "US" and made a plot from it. My plan is to make a separate plot for each state and for each variable and then put it into a shiny app. I think this plot will be especially useful for combining with other plots, especially those that are broken down by congressional district, so I am excited to move forward with that part of my project.
